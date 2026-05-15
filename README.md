@@ -1,90 +1,132 @@
-# Obsidian Sample Plugin
+# Image Share — Obsidian Plugin
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Export Obsidian notes as images (PNG/JPG/WebP/PDF) with pagination, watermark, and batch export.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+## Features
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open modal (simple)" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+- **Formats**: PNG (lossless/lossy), JPG, WebP, PDF
+- **Pagination**: Fixed height, HR rule, or auto-split long notes
+- **Watermark**: Text or image overlay with opacity/rotation/position controls
+- **Author info**: Name, remark, avatar with align/position options
+- **Batch export**: Export entire folders with 3-concurrent processing
+- **Multi-language**: 20 locales via typesafe-i18n
+- **Quick export**: Copy selection or entire file to clipboard in one click
+- **Live preview**: Real-time preview in export modal with adjustable settings
 
-## First time developing plugins?
+## Installation
 
-Quick starting guide for new plugin devs:
+### Manual (for testing)
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
-
-## Releasing new releases
-
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
-
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
-
-## Adding your plugin to the community plugin list
-
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
-
-## How to use
-
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
-
-## Manually installing the plugin
-
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- This project already has eslint preconfigured, you can invoke a check by running`npm run lint`
-- Together with a custom eslint [plugin](https://github.com/obsidianmd/eslint-plugin) for Obsidan specific code guidelines.
-- A GitHub action is preconfigured to automatically lint every commit on all branches.
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+```bash
+npm install
+npm run build
 ```
 
-If you have multiple URLs, you can also do:
+Copy `main.js`, `manifest.json`, and `styles.css` to:
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
+```
+<Vault>/.obsidian/plugins/obsidian-image-share/
 ```
 
-## API Documentation
+Then enable **Image Share** in **Settings → Community plugins**.
 
-See https://docs.obsidian.md
+### From Community Plugins
+
+Search "Image Share" in Obsidian's Community Plugins browser and install.
+
+## Usage
+
+- **Right-click file/folder** → Export to image
+- **Right-click editor** → Export selection to image / Export to image
+- **Command palette** → "Export as an image" / "Export selection to image"
+- **Settings** → Configure default format, resolution, padding, watermark, split mode
+
+### Resolution Behavior
+
+| Setting | DPR=1 (Standard) | DPR=2 (Retina) | DPR=3 (Super Retina) |
+|---------|-----------------|----------------|---------------------|
+| 1x | 1× | 2× | 3× |
+| 2x | 2× | 4× | 4× (capped) |
+| 3x | 3× | 4× (capped) | 4× (capped) |
+| 4x | 4× | 4× (capped) | 4× (capped) |
+
+Maximum scale is capped at 4× to prevent OOM on large notes.
+
+### Pagination Modes
+
+- **None**: Single image
+- **Fixed**: Split by pixel height
+- **HR**: Split at `---` horizontal rules in markdown
+- **Auto**: Intelligent split based on content boundaries
+
+### Padding Modes
+
+- **Unified** (default): Single value applies to all 4 sides
+- **Independent**: Configure top/right/bottom/left separately
+
+Toggle between modes in the export modal or settings.
+
+## Development
+
+```bash
+npm install
+npm run dev           # Watch mode with sourcemaps
+npm run build         # Type-check + production bundle
+npm run typesafe-i18n # Regenerate i18n types after editing translations
+```
+
+### Project Structure
+
+```
+src/
+  ExportImagePlugin.ts    # Plugin lifecycle, commands, menus
+  settings.ts             # Default settings
+  formConfig.ts           # Settings UI schema
+  SettingRenderer.ts      # Obsidian-native settings tab renderer
+  L.ts                    # i18n singleton entry
+  components/
+    file/
+      exportImage.tsx     # Single file export flow
+      ModalContent.tsx    # Export preview modal with dynamic form schema
+    folder/
+      exportFolder.tsx    # Batch folder export
+    common/
+      Target.tsx          # Export preview component (watermark, metadata)
+      form/
+        FormItems.tsx     # Conditional form renderer with auto-indentation
+  utils/
+    capture.ts            # Core export: save, copy, split, batch
+    makeHTML.tsx          # Markdown → React rendering pipeline
+    split.ts              # Pagination position calculation
+    asyncRender.ts        # Mermaid/async content detection
+  i18n/                   # 20 locale translations
+```
+
+### Key Pipeline
+
+1. `exportImage.tsx` renders markdown via `MarkdownRenderer.render`
+2. `makeHTML.tsx` wraps it in React `<Target>` with watermark/metadata
+3. `capture.ts` captures via `html-to-image.toCanvas()` once, then crops per-page with Canvas `drawImage()`
+4. Desktop: download via `<a download>`; Mobile: save to vault via `app.vault.createBinary`
+
+## Settings
+
+| Setting | Default | Description |
+|---------|---------|-------------|
+| Width | 640px | Exported image width |
+| Resolution | 3x | Scale multiplier (capped at 4× total) |
+| Format | png0 | PNG lossless |
+| Show filename | true | Include filename as title |
+| Padding | 6px | Unified padding (all sides); toggle for independent control |
+| Watermark | disabled | Text or image overlay |
+| Split mode | none | Pagination behavior |
+| Split height | 1000px | Page height for fixed mode |
+| Overlap | 80px | Overlap between pages |
+
+## Author
+
+Created by [chuyuan-li](https://github.com/chuyuan-li).
+
+## License
+
+ISC

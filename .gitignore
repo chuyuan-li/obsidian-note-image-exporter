@@ -20,3 +20,25 @@ data.json
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
+
+# AI assistant docs and planning files
+CLAUDE.md
+AGENTS.md
+OPTIMIZATION_PLAN.md
+SOCIAL_MEDIA_EXPORT_RESEARCH.md
+
+# Deployment scripts with local paths
+build-and-deploy.sh
+
+# Sisyphus plans
+.sisyphus/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+
+# Test coverage
+coverage/
