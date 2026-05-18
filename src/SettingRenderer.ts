@@ -9,6 +9,7 @@ import type ExportImagePlugin from './ExportImagePlugin';
 import type { SettingItem } from './formConfig';
 import L from './L';
 import FormItems from './components/common/form/FormItems';
+import { syncUnifiedPadding } from './utils/settings';
 
 const REPOSITORY = 'chuyuan-li/obsidian-note-image-exporter';
 const REPOSITORY_URL = `https://github.com/${REPOSITORY}`;
@@ -21,15 +22,7 @@ const SettingsForm: FC<{
   const [settings, setSettings] = useState<ISettings>(plugin.settings);
 
   const handleUpdate = useCallback((newData: ISettings) => {
-    if (newData.padding?.unified !== false && newData.padding) {
-      const oldTop = settings.padding?.top;
-      const newTop = newData.padding.top;
-      if (newTop !== undefined && newTop !== oldTop) {
-        newData.padding.right = newTop;
-        newData.padding.bottom = newTop;
-        newData.padding.left = newTop;
-      }
-    }
+    syncUnifiedPadding(settings, newData);
 
     plugin.settings = newData;
     setSettings({ ...newData });

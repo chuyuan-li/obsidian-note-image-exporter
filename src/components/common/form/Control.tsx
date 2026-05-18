@@ -1,6 +1,7 @@
 import React, { type FC, useEffect, useRef, useState } from 'react';
 import get from 'lodash/get';
 import set from 'lodash/set';
+import cloneDeep from 'lodash/cloneDeep';
 import { setIcon, type App, Modal } from 'obsidian';
 import { fileToBase64 } from '../../../utils';
 import L from '../../../L';
@@ -18,7 +19,7 @@ const Control: FC<{
   const inputReference = useRef<HTMLInputElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
   const onChange = (value: SettingPathValue<ISettings, SettingPath<ISettings>>) => {
-    const newSetting = { ...setting };
+    const newSetting = cloneDeep(setting);
     set(newSetting, fieldSchema.path, value);
     update(newSetting);
   };

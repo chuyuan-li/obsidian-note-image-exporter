@@ -5,6 +5,7 @@ import React, {
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { isCopiable } from 'src/imageFormatTester';
 import { copy, save, saveAll } from '../../utils/capture';
+import { syncUnifiedPadding } from '../../utils/settings';
 import L from '../../L';
 import Target, { type TargetRef } from '../common/Target';
 import FormItems from '../common/form/FormItems';
@@ -280,16 +281,7 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
   }, []);
 
   const handleUpdate = useCallback((newData: ISettings) => {
-    if (newData.padding?.unified !== false && newData.padding) {
-      const oldTop = formData.padding?.top;
-      const newTop = newData.padding.top;
-      if (newTop !== undefined && newTop !== oldTop) {
-        newData.padding.right = newTop;
-        newData.padding.bottom = newTop;
-        newData.padding.left = newTop;
-      }
-    }
-    setFormData(newData);
+    setFormData(syncUnifiedPadding(formData, newData));
   }, [formData]);
 
   const root = useRef<TargetRef>(null);
