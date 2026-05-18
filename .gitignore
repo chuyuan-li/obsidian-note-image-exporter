@@ -27,6 +27,7 @@ CLAUDE.md
 AGENTS.md
 OPTIMIZATION_PLAN.md
 SOCIAL_MEDIA_EXPORT_RESEARCH.md
+LINT_REMEDIATION_PLAN.md
 
 # Deployment scripts with local paths
 build-and-deploy.sh
