@@ -25,7 +25,7 @@ npm run build
 Copy `main.js`, `manifest.json`, and `styles.css` to:
 
 ```
-<Vault>/.obsidian/plugins/obsidian-image-share/
+<Vault>/.obsidian/plugins/image-share/
 ```
 
 Then enable **Image Share** in **Settings → Community plugins**.
