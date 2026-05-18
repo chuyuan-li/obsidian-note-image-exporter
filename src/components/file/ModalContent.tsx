@@ -262,9 +262,12 @@ interface Props {
   frontmatter: FrontMatterCache | undefined;
   metadataMap: Record<string, { type: MetadataType }>;
   title: string;
+  modalContainerEl: HTMLElement;
 }
 
-const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMap, title, app }) => {
+const ModalContent: FC<Props> = ({
+  markdownEl, settings, frontmatter, metadataMap, title, app, modalContainerEl,
+}) => {
   const [formData, setFormData] = useState<ISettings>(settings);
   const [availableFormats, setAvailableFormats] = useState<FileFormat[]>(formatAvailable);
 
@@ -292,7 +295,7 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
 
   useEffect(() => {
     const calculateHeight = () => {
-      const height = activeDocument.querySelector('.modal-container')?.clientHeight;
+      const height = modalContainerEl.clientHeight;
       if (height) {
         setMainHeight(height - 160);
       }
@@ -307,7 +310,7 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
     return () => {
       activeWindow.removeEventListener('resize', calculateHeight);
     };
-  }, []);
+  }, [modalContainerEl]);
 
   useEffect(() => {
     let timeoutId: number | undefined;
@@ -318,7 +321,7 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
     };
 
     // 当 markdownEl 准备好时，更新 loading 状态
-    if (markdownEl instanceof HTMLElement && markdownEl.innerHTML.length > 0) {
+    if (markdownEl.instanceOf(HTMLElement) && markdownEl.innerHTML.length > 0) {
       markContentLoaded();
     }
 
@@ -413,8 +416,9 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
       );
     } catch {
       new Notice(L.saveFail());
+    } finally {
+      setProcessing(false);
     }
-    setProcessing(false);
   }, [root, formData.resolutionMode, formData.format, title, formData.width]);
   const handleCopy = useCallback(async () => {
     if ((formData.width || 640) <= 20) {
@@ -428,9 +432,9 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
       await copy(root.current.contentElement, formData.resolutionMode, formData.format);
     } catch {
       new Notice(L.copyFail());
+    } finally {
+      setProcessing(false);
     }
-
-    setProcessing(false);
   }, [root, formData.resolutionMode, formData.format, title, formData.width]);
 
   const handleSaveAll = useCallback(async () => {
@@ -453,9 +457,10 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
         title,
       );
     } catch {
-      new Notice(L.copyFail());
+      new Notice(L.saveFail());
+    } finally {
+      setProcessing(false);
     }
-    setProcessing(false);
   }, [root, formData.format, formData.resolutionMode, formData.split, app, title]);
 
   return (

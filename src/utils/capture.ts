@@ -239,6 +239,10 @@ export async function saveMultipleFiles(
 const IMAGE_URL_CACHE_MAX_ENTRIES = 10;
 const imageUrlCache = new Map<string, string>();
 
+function failSave(message = L.saveFail()): never {
+  throw new Error(message);
+}
+
 export function revokeAllImageUrls() {
   for (const url of imageUrlCache.values()) {
     URL.revokeObjectURL(url);
@@ -264,12 +268,10 @@ export async function getRemoteImageUrl(url?: string) {
     const blob = new Blob([response.arrayBuffer], { type: response.headers['content-type'] || 'application/octet-stream' });
     const res = URL.createObjectURL(blob);
     if (imageUrlCache.size >= IMAGE_URL_CACHE_MAX_ENTRIES) {
-      const oldestUrl = imageUrlCache.keys().next().value;
-      if (oldestUrl !== undefined) {
-        const oldestObjectUrl = imageUrlCache.get(oldestUrl);
-        if (oldestObjectUrl) {
-          URL.revokeObjectURL(oldestObjectUrl);
-        }
+      const oldestEntry = imageUrlCache.entries().next();
+      if (!oldestEntry.done) {
+        const [oldestUrl, oldestObjectUrl] = oldestEntry.value;
+        URL.revokeObjectURL(oldestObjectUrl);
         imageUrlCache.delete(oldestUrl);
       }
     }
@@ -324,8 +326,7 @@ export async function saveAll(
 
         const ctx = pageCanvas.getContext('2d');
         if (!ctx) {
-          new Notice(L.saveFail());
-          return;
+          failSave();
         }
         ctx.drawImage(
           fullCanvas,
@@ -353,8 +354,7 @@ export async function saveAll(
 
       const filename = `${title.replaceAll(/\s+/g, '_')}.pdf`;
       if (!pdf) {
-        new Notice(L.saveFail());
-        return;
+        failSave();
       }
       if (Platform.isMobile) {
         const filePath = await saveToVault(app, new Blob([pdf.output('arraybuffer')]), filename);
@@ -371,8 +371,7 @@ export async function saveAll(
 
       const MAX_PIXELS = 16384 * 16384;
       if (fullCanvas.width * fullCanvas.height > MAX_PIXELS) {
-        new Notice(L.saveFail());
-        return;
+        failSave();
       }
 
       const ext = format.replace(/\d$/, '');
@@ -389,8 +388,7 @@ export async function saveAll(
 
         const ctx = pageCanvas.getContext('2d');
         if (!ctx) {
-          new Notice(L.saveFail());
-          return;
+          failSave();
         }
         ctx.drawImage(
           fullCanvas,
@@ -404,8 +402,7 @@ export async function saveAll(
           pageCanvas.toBlob(resolve, mime, 0.92);
         });
         if (!blob) {
-          new Notice(L.saveFail());
-          return;
+          failSave();
         }
         const filename = `${title.replaceAll(/\s+/g, '_')}_${i + 1}.${ext}`;
         blobs.push({ blob, filename });

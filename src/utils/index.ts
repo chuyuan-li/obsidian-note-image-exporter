@@ -111,4 +111,34 @@ export function getMime(format: FileFormat) {
   return `image/${format.includes('png') ? 'png' : (format === 'jpg' ? 'jpeg' : format)}`;
 }
 
+export function waitForElement(
+  parent: HTMLElement,
+  selector: string,
+  timeout: number,
+): Promise<HTMLElement> {
+  return new Promise((resolve, reject) => {
+    const existing = parent.querySelector<HTMLElement>(selector);
+    if (existing) {
+      resolve(existing);
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      const element = parent.querySelector<HTMLElement>(selector);
+      if (element) {
+        window.clearTimeout(timer);
+        observer.disconnect();
+        resolve(element);
+      }
+    });
+
+    const timer = window.setTimeout(() => {
+      observer.disconnect();
+      reject(new Error(`Timeout waiting for ${selector}`));
+    }, timeout);
+
+    observer.observe(parent, { childList: true, subtree: true });
+  });
+}
+
 export { waitForAsyncRenders } from './asyncRender';

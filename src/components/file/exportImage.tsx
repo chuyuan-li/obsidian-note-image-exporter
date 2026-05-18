@@ -14,7 +14,7 @@ import { createRoot } from 'react-dom/client';
 import L from '../../L';
 import ModalContent from './ModalContent';
 import Target from '../common/Target';
-import { getMetadataMap, waitForAsyncRenders } from 'src/utils';
+import { getMetadataMap, waitForAsyncRenders, waitForElement } from 'src/utils';
 import { copy } from 'src/utils/capture';
 
 export default async function (
@@ -83,6 +83,7 @@ export default async function (
         title={file.basename}
         metadataMap={metadataMap}
         app={app}
+        modalContainerEl={modal.containerEl}
       />,
     );
 
@@ -95,30 +96,6 @@ export default async function (
       root?.unmount();
     };
   }
-}
-
-function waitForElement(parent: HTMLElement, selector: string, timeout: number): Promise<HTMLElement> {
-  return new Promise((resolve, reject) => {
-    const el = parent.querySelector<HTMLElement>(selector);
-    if (el) {
-      resolve(el);
-      return;
-    }
-
-    const observer = new MutationObserver(() => {
-      const el = parent.querySelector<HTMLElement>(selector);
-      if (el) {
-        window.clearTimeout(timer);
-        observer.disconnect();
-        resolve(el);
-      }
-    });
-    const timer = window.setTimeout(() => {
-      observer.disconnect();
-      reject(new Error(`Timeout waiting for ${selector}`));
-    }, timeout);
-    observer.observe(parent, { childList: true, subtree: true });
-  });
 }
 
 async function loadDocumentContent(app: App, el: HTMLElement, markdown: string, filePath: string) {

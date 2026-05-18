@@ -138,6 +138,8 @@ const Target = forwardRef<
   }), [clipRef.current, rootRef.current]);
 
   useEffect(() => {
+    let cancelled = false;
+
     void (async () => {
       const props: WatermarkProps = {
         monitor: false,
@@ -160,9 +162,28 @@ const Target = forwardRef<
         props.image = await getRemoteImageUrl(setting.watermark.image.src);
       }
 
-      setWatermarkProps(props);
+      if (!cancelled) {
+        setWatermarkProps(props);
+      }
     })();
-  }, [setting]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    setting.watermark.enable,
+    setting.watermark.rotate,
+    setting.watermark.opacity,
+    setting.watermark.height,
+    setting.watermark.width,
+    setting.watermark.x,
+    setting.watermark.y,
+    setting.watermark.type,
+    setting.watermark.text.content,
+    setting.watermark.text.fontSize,
+    setting.watermark.text.color,
+    setting.watermark.image.src,
+  ]);
 
   return (
     <div ref={clipRef}>

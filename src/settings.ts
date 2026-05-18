@@ -98,6 +98,3 @@ export function getAvailableFormats(): Promise<FileFormat[]> {
 
   return formatAvailablePromise;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-getAvailableFormats();

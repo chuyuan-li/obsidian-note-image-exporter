@@ -10,29 +10,9 @@ import {
 import React from 'react';
 import { type Root, createRoot } from 'react-dom/client';
 import Target from 'src/components/common/Target';
-import { getMetadata, getMetadataMap, waitForAsyncRenders } from '.';
-
-function waitForElement(parent: HTMLElement, selector: string, timeout: number): Promise<HTMLElement> {
-  return new Promise((resolve, reject) => {
-    const el = parent.querySelector<HTMLElement>(selector);
-    if (el) { resolve(el); return; }
-
-    const timer = window.setTimeout(() => {
-      observer.disconnect();
-      reject(new Error(`Timeout waiting for ${selector}`));
-    }, timeout);
-
-    const observer = new MutationObserver(() => {
-      const el = parent.querySelector<HTMLElement>(selector);
-      if (el) {
-        window.clearTimeout(timer);
-        observer.disconnect();
-        resolve(el);
-      }
-    });
-    observer.observe(parent, { childList: true, subtree: true });
-  });
-}
+import {
+  getMetadata, getMetadataMap, waitForAsyncRenders, waitForElement,
+} from '.';
 
  
 export default async function makeHTML(
