@@ -16,6 +16,18 @@ const alignMap = {
   right: 'flex-end',
 };
 
+function getFrontmatterClasses(frontmatter: FrontMatterCache | undefined): string[] {
+  const fields: Record<string, unknown> | undefined = frontmatter;
+  const value = fields?.cssclasses ?? fields?.cssclass;
+  if (typeof value === 'string') {
+    return [value];
+  }
+  if (Array.isArray(value)) {
+    return value.filter((item): item is string => typeof item === 'string');
+  }
+  return [];
+}
+
 export interface TargetRef {
   element: HTMLElement;
   contentElement: HTMLElement;
@@ -105,15 +117,23 @@ const Target = forwardRef<
     contentElement: rootRef.current!,
     setClip: (startY: number, height: number) => {
       if (!clipRef.current || !rootRef.current) return;
-      clipRef.current.style.height = `${height}px`;
-      clipRef.current.style.overflow = 'hidden';
-      rootRef.current.style.transform = `translateY(-${startY}px)`;
+      clipRef.current.setCssStyles({
+        height: `${height}px`,
+        overflow: 'hidden',
+      });
+      rootRef.current.setCssStyles({
+        transform: `translateY(-${startY}px)`,
+      });
     },
     resetClip: () => {
       if (!clipRef.current || !rootRef.current) return;
-      clipRef.current.style.height = '';
-      clipRef.current.style.overflow = '';
-      rootRef.current.style.transform = '';
+      clipRef.current.setCssStyles({
+        height: '',
+        overflow: '',
+      });
+      rootRef.current.setCssStyles({
+        transform: '',
+      });
     }
   }), [clipRef.current, rootRef.current]);
 
@@ -147,7 +167,7 @@ const Target = forwardRef<
   return (
     <div ref={clipRef}>
       <div
-        className={clsx('export-image-root markdown-reading-view', frontmatter?.cssclasses || frontmatter?.cssclass)}
+        className={clsx('export-image-root markdown-reading-view', getFrontmatterClasses(frontmatter))}
         ref={rootRef}
         style={{
           display: 'flex',

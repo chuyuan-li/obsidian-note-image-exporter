@@ -3,7 +3,12 @@ import {jpg, png, webp} from './tiny';
 
 async function tester(image: string) {
   try {
-    const blob = await (await fetch(image)).blob();
+    const [, metadata, base64] = image.match(/^data:([^;]+);base64,(.+)$/) ?? [];
+    if (!metadata || !base64) {
+      return false;
+    }
+    const bytes = Uint8Array.from(atob(base64), char => char.charCodeAt(0));
+    const blob = new Blob([bytes], { type: metadata });
     const data: ClipboardItem[] = [];
     data.push(
       new ClipboardItem({
@@ -50,7 +55,7 @@ export async function isCreatable(type: FileFormat): Promise<boolean> {
     return createCache[type]!;
   }
 
-  const canvas = document.createElement('canvas');
+  const canvas = activeDocument.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
   const mime = getMime(type);

@@ -35,7 +35,7 @@ export function getElementMeasures(container: HTMLElement, mode: SplitMode): Ele
     });
   } else if (mode === 'auto') {
     // 查找所有段落元素的位置
-    const paragraphs = Array.from(container.find('.export-image-markdown>div')!.children);
+    const paragraphs = Array.from(container.find('.export-image-markdown>div').children);
     const containerRect = container.getBoundingClientRect();
 
     return paragraphs.map((p, index) => {

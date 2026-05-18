@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+ 
+ 
 import {
   type App,
   MarkdownRenderChild,
@@ -14,7 +14,7 @@ import { getMetadata, waitForAsyncRenders } from '.';
 
 function waitForElement(parent: HTMLElement, selector: string, timeout: number): Promise<HTMLElement> {
   return new Promise((resolve, reject) => {
-    const el = parent.querySelector(selector) as HTMLElement | null;
+    const el = parent.querySelector<HTMLElement>(selector);
     if (el) { resolve(el); return; }
 
     const timer = window.setTimeout(() => {
@@ -23,7 +23,7 @@ function waitForElement(parent: HTMLElement, selector: string, timeout: number):
     }, timeout);
 
     const observer = new MutationObserver(() => {
-      const el = parent.querySelector(selector) as HTMLElement | null;
+      const el = parent.querySelector<HTMLElement>(selector);
       if (el) {
         window.clearTimeout(timer);
         observer.disconnect();
@@ -34,7 +34,7 @@ function waitForElement(parent: HTMLElement, selector: string, timeout: number):
   });
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+ 
 export default async function makeHTML(
   file: TFile,
   settings: ISettings,

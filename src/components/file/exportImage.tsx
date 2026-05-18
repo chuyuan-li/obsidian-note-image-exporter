@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+ 
+ 
 import React from 'react';
 import {
   type App,
@@ -32,10 +32,12 @@ export default async function (
     await loadDocumentContent(app, el, markdown, file.path);
 
     const div = createDiv();
-    div.style.width = (settings.width || 400) + 'px';
-    div.style.position = 'fixed';
-    div.style.top = '-9999px';
-    div.style.left = '-9999px';
+    div.setCssStyles({
+      width: `${settings.width || 400}px`,
+      position: 'fixed',
+      top: '-9999px',
+      left: '-9999px',
+    });
     activeDocument.body.appendChild(div);
     const root = createRoot(div);
     root.render(
@@ -64,8 +66,10 @@ export default async function (
   else {
     const modal = new Modal(app);
     modal.setTitle(L.imageExportPreview());
-    modal.modalEl.style.width = '85vw';
-    modal.modalEl.style.maxWidth = '1500px';
+    modal.modalEl.setCssStyles({
+      width: '85vw',
+      maxWidth: '1500px',
+    });
     modal.open();
     const root = createRoot(modal.contentEl);
 
@@ -96,14 +100,14 @@ export default async function (
 
 function waitForElement(parent: HTMLElement, selector: string, timeout: number): Promise<HTMLElement> {
   return new Promise((resolve, reject) => {
-    const el = parent.querySelector(selector) as HTMLElement | null;
+    const el = parent.querySelector<HTMLElement>(selector);
     if (el) {
       resolve(el);
       return;
     }
 
     const observer = new MutationObserver(() => {
-      const el = parent.querySelector(selector) as HTMLElement | null;
+      const el = parent.querySelector<HTMLElement>(selector);
       if (el) {
         window.clearTimeout(timer);
         observer.disconnect();
@@ -122,13 +126,17 @@ async function loadDocumentContent(app: App, el: HTMLElement, markdown: string, 
   const container = activeDocument.createElement('div');
   try {
     container.className = 'markdown-preview-view markdown-rendered';
-    container.style.position = 'fixed';
-    container.style.top = '-9999px';
-    container.style.left = '-9999px';
-    container.style.width = '1200px';
+    container.setCssStyles({
+      position: 'fixed',
+      top: '-9999px',
+      left: '-9999px',
+      width: '1200px',
+    });
     activeDocument.body.appendChild(container);
 
-    await MarkdownRenderer.render(app, markdown, container, filePath, new MarkdownRenderChild(container));
+    const renderChild = new MarkdownRenderChild(container);
+    await MarkdownRenderer.render(app, markdown, container, filePath, renderChild);
+    renderChild.unload();
     await waitForAsyncRenders(container);
 
     container.querySelectorAll('.edit-block-button, .callout-fold').forEach(it => it.remove());

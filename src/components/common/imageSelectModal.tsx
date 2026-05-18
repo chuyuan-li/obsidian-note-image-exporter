@@ -41,8 +41,7 @@ const ImageSelect: FC<{
     previewRef.current?.empty();
     if (selected) {
       createHtml(selected.path, app).then(html =>
-        // eslint-disable-next-line unicorn/prefer-dom-node-append
-        previewRef.current?.appendChild(html),
+        previewRef.current?.append(html),
       ).catch(() => {
         // empty
       });

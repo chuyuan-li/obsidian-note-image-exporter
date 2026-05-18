@@ -14,7 +14,7 @@ function saveAs(blob: Blob, filename: string) {
   const a = activeDocument.createElement('a');
   a.href = url;
   a.download = filename;
-  a.style.display = 'none';
+  a.setCssStyles({ display: 'none' });
   activeDocument.body.appendChild(a);
   a.click();
   window.setTimeout(() => {
@@ -176,9 +176,11 @@ export async function saveMultipleFiles(
   const tasks = files.map(file => async () => {
     // Each concurrent task gets its own temporary container
     const tempContainer = activeDocument.createElement('div');
-    tempContainer.style.position = 'fixed';
-    tempContainer.style.top = '-9999px';
-    tempContainer.style.left = '-9999px';
+    tempContainer.setCssStyles({
+      position: 'fixed',
+      top: '-9999px',
+      left: '-9999px',
+    });
     activeDocument.body.appendChild(tempContainer);
     let cleanup: (() => void) | undefined;
 
@@ -191,14 +193,18 @@ export async function saveMultipleFiles(
         element: el,
         contentElement: el,
         setClip: (startY: number, height: number) => {
-          el.style.height = `${height}px`;
-          el.style.overflow = 'hidden';
-          el.style.transform = `translateY(-${startY}px)`;
+          el.setCssStyles({
+            height: `${height}px`,
+            overflow: 'hidden',
+            transform: `translateY(-${startY}px)`,
+          });
         },
         resetClip: () => {
-          el.style.height = '';
-          el.style.overflow = '';
-          el.style.transform = '';
+          el.setCssStyles({
+            height: '',
+            overflow: '',
+            transform: '',
+          });
         },
       };
 

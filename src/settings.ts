@@ -31,12 +31,12 @@ export function mergeSettings(saved: Partial<ISettings> | null | undefined): ISe
   return mergeObject(DEFAULT_SETTINGS, saved);
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+ 
 export const DEFAULT_SETTINGS: ISettings = {
   width: 640,
   showFilename: true,
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  resolutionMode: '1x' as ResolutionMode,
+   
+  resolutionMode: '1x',
   format: 'png0',
   showMetadata: false,
   recursive: false,
@@ -74,7 +74,7 @@ export const DEFAULT_SETTINGS: ISettings = {
   split: {
     height: 1000,
     overlap: 80,
-    mode: 'none' as SplitMode,
+    mode: 'none',
   },
 };
 

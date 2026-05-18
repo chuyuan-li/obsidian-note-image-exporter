@@ -152,8 +152,8 @@ const Control: FC<{
                   color: 'white',
                   borderRadius: '50%',
                   cursor: 'pointer',
-                  ['--icon-size' as string]: '12px',
-                  ['--icon-color' as string]: 'var(--color-red)',
+                  '--icon-size': '12px',
+                  '--icon-color': 'var(--color-red)',
                 } as React.CSSProperties}
               ></div>
             </div>

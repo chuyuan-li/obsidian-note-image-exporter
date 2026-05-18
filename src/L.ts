@@ -6,10 +6,14 @@ loadAllLocales();
 
 let locale: Locales = 'en';
 try {
-  // @ts-ignore
-  locale = (global?.i18next?.language as string || '');
-  if (locale.startsWith('zh')) {
+  const language = (window as Window & {
+    i18next?: { language?: unknown };
+  }).i18next?.language;
+  const detectedLocale = typeof language === 'string' ? language : '';
+  if (detectedLocale.startsWith('zh')) {
     locale = 'zh';
+  } else if (locales.includes(detectedLocale as Locales)) {
+    locale = detectedLocale as Locales;
   }
 
   if (!locales.includes(locale)) {
@@ -19,7 +23,7 @@ try {
   /* empty */
 }
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
+ 
 const L = i18n()[locale];
 
 export default L;
