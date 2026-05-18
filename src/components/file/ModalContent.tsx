@@ -244,13 +244,13 @@ const getFormSchema = (settings: ISettings, availableFormats: FileFormat[]): For
     label: L.setting.format.title(),
     path: 'format',
     type: 'select',
-    options: [
+    options: ([
       { text: L.setting.format.png0(), value: 'png0' },
       { text: L.setting.format.png1(), value: 'png1' },
       { text: L.setting.format.jpg(), value: 'jpg' },
       { text: '.webp', value: 'webp' },
       { text: L.setting.format.pdf(), value: 'pdf' },
-    ].filter(({ value }) => availableFormats.includes(value as FileFormat)),
+    ] satisfies Array<{ text: string; value: FileFormat }>).filter(({ value }) => availableFormats.includes(value)),
   },
 ];
 

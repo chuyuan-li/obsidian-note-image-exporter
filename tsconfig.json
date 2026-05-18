@@ -17,6 +17,6 @@
     "jsx": "preserve",
     "outDir": "dist"
   },
-  "include": ["src/**/*.ts", "main.ts", "src/**/*.tsx"],
+  "include": ["src/**/*.ts", "main.ts", "src/**/*.tsx", "type.d.ts"],
   "exclude": ["*.mjs"]
 }

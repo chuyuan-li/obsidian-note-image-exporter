@@ -107,13 +107,13 @@ export const createSettingConfig = async (app: App): Promise<FormSchema<ISetting
       label: L.setting.format.title(),
       desc: L.setting.format.description(),
       type: 'select',
-      options: [
+      options: ([
         { value: 'png0', text: L.setting.format.png0() },
         { value: 'png1', text: L.setting.format.png1() },
         { value: 'jpg', text: L.setting.format.jpg() },
         { value: 'webp', text: '.webp' },
         { value: 'pdf', text: L.setting.format.pdf() },
-      ].filter(({ value }) => formatAvailable.includes(value as FileFormat)),
+      ] satisfies Array<{ text: string; value: FileFormat }>).filter(({ value }) => formatAvailable.includes(value)),
     },
     {
       path: 'quickExportSelection',

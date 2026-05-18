@@ -13,11 +13,11 @@ const Control: FC<{
   update: (settings: ISettings) => void;
   app: App;
 }> = ({ fieldSchema, setting, update, app }) => {
-  const value: ValueType = get(setting, fieldSchema.path) as ValueType;
+  const value = get(setting, fieldSchema.path);
   const [processedImageUrl, setProcessedImageUrl] = useState<string | undefined>(undefined);
   const inputReference = useRef<HTMLInputElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
-  const onChange = (value: any) => {
+  const onChange = (value: SettingPathValue<ISettings, SettingPath<ISettings>>) => {
     const newSetting = { ...setting };
     set(newSetting, fieldSchema.path, value);
     update(newSetting);
@@ -35,7 +35,7 @@ const Control: FC<{
         const url = await getRemoteImageUrl(value);
         setProcessedImageUrl(url);
       } else {
-        setProcessedImageUrl(value);
+        setProcessedImageUrl(value as string | undefined);
       }
     };
     processImage();
@@ -62,7 +62,7 @@ const Control: FC<{
       return (
         <input
           type='number'
-          value={value}
+          value={value as string | number | undefined}
           onChange={e => {
             onChange(e.target.value ? Number(e.target.value) : undefined);
           }
@@ -75,7 +75,7 @@ const Control: FC<{
       return (
         <input
           type='text'
-          value={value}
+          value={value as string | number | undefined}
           onChange={e => {
             onChange(e.target.value);
           }}
@@ -99,7 +99,7 @@ const Control: FC<{
     case 'select': {
       return (
         <select
-          value={value}
+          value={value as string | number | undefined}
           onChange={e => {
             onChange(e.target.value);
           }}

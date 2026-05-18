@@ -94,13 +94,13 @@ const ModalContent: FC<{
       label: L.setting.format.title(),
       path: 'format',
       type: 'select',
-      options: [
+      options: ([
         { value: 'png0', text: L.setting.format.png0() },
         { value: 'png1', text: L.setting.format.png1() },
         { value: 'jpg', text: L.setting.format.jpg() },
         { value: 'webp', text: '.webp' },
         { value: 'pdf', text: L.setting.format.pdf() },
-      ].filter(({ value }) => availableFormats.includes(value as FileFormat)),
+      ] satisfies Array<{ text: string; value: FileFormat }>).filter(({ value }) => availableFormats.includes(value)),
     },
   ];
   useEffect(() => {
