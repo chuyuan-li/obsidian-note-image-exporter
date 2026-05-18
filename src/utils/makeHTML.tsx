@@ -10,7 +10,7 @@ import {
 import React from 'react';
 import { type Root, createRoot } from 'react-dom/client';
 import Target from 'src/components/common/Target';
-import { getMetadata, waitForAsyncRenders } from '.';
+import { getMetadata, getMetadataMap, waitForAsyncRenders } from '.';
 
 function waitForElement(parent: HTMLElement, selector: string, timeout: number): Promise<HTMLElement> {
   return new Promise((resolve, reject) => {
@@ -53,8 +53,7 @@ export default async function makeHTML(
   );
   await waitForAsyncRenders(element);
 
-  /* @ts-ignore */
-  const metadataMap: Record<string, { type: MetadataType }> = app.metadataCache.getAllPropertyInfos();
+  const metadataMap = getMetadataMap(app);
 
   const frontmatter = getMetadata(file, app);
 

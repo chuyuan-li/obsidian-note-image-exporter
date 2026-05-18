@@ -304,46 +304,35 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
     // 监听窗口大小变化
     activeWindow.addEventListener('resize', calculateHeight);
 
-    // 监听内容加载事件
-    const handleContentLoaded = () => {
-      // 给一个小延迟确保内容完全加载
-      window.setTimeout(() => {
-        setIsLoading(false);
-      }, 100);
-    };
-
-    activeDocument.addEventListener("export-image-content-loaded", handleContentLoaded);
-
-    // 也检查markdownEl是否已准备好
-    if (markdownEl && markdownEl.instanceOf(HTMLElement) && markdownEl.innerHTML && markdownEl.innerHTML.length > 0) {
-      window.setTimeout(() => {
-        setIsLoading(false);
-      }, 100);
-    }
-
     return () => {
       activeWindow.removeEventListener('resize', calculateHeight);
-      activeDocument.removeEventListener("export-image-content-loaded", handleContentLoaded);
     };
   }, []);
 
   useEffect(() => {
-    // 当markdownEl准备好时，更新loading状态
-    if (markdownEl && markdownEl.instanceOf(HTMLElement) && markdownEl.innerHTML && markdownEl.innerHTML.length > 0) {
-      // 给一个小延迟确保内容完全加载
-      window.setTimeout(() => {
+    let timeoutId: number | undefined;
+    const markContentLoaded = () => {
+      timeoutId = window.setTimeout(() => {
         setIsLoading(false);
       }, 100);
+    };
+
+    // 当 markdownEl 准备好时，更新 loading 状态
+    if (markdownEl instanceof HTMLElement && markdownEl.innerHTML.length > 0) {
+      markContentLoaded();
     }
-    
+
     // 监听内容加载完成事件
     const handleContentLoaded = () => {
-      setIsLoading(false);
+      markContentLoaded();
     };
-    
+
     activeDocument.addEventListener("export-image-content-loaded", handleContentLoaded);
-    
+
     return () => {
+      if (timeoutId !== undefined) {
+        window.clearTimeout(timeoutId);
+      }
       activeDocument.removeEventListener("export-image-content-loaded", handleContentLoaded);
     };
   }, [markdownEl]);
@@ -396,10 +385,13 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
   }, [formData.split.mode]);
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    isCopiable(formData.format).then(result => {
-      setAllowCopy(Boolean(result));
-    });
+    void isCopiable(formData.format)
+      .then(result => {
+        setAllowCopy(Boolean(result));
+      })
+      .catch(() => {
+        setAllowCopy(false);
+      });
   }, [formData.format]);
 
   const handleSave = useCallback(async () => {

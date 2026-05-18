@@ -20,7 +20,7 @@ import exportImage from './components/file/exportImage';
 export default class ExportImagePlugin extends Plugin {
   settings: ISettings;
 
-  async epxortFile(file: TFile) {
+  async exportFile(file: TFile) {
     const frontmatter = getMetadata(file, this.app);
     const markdown = await this.app.vault.cachedRead(file);
     await exportImage(this.app, this.settings, markdown, file, frontmatter, 'file');
@@ -37,7 +37,7 @@ export default class ExportImagePlugin extends Plugin {
               .setTitle(L.exportImage())
               .setIcon('image-down')
               .onClick(async () => {
-                await this.epxortFile(file);
+                await this.exportFile(file);
               });
           });
         } else if (file instanceof TFolder) {
@@ -55,9 +55,7 @@ export default class ExportImagePlugin extends Plugin {
 
     this.registerEvent(
       this.app.workspace.on('editor-menu', (menu, editor) => {
-        const file: TFile
-          // @ts-ignore: Obsidian ts defined incomplete.
-          = editor.editorComponent.file as (TFile | undefined) ?? this.app.workspace.getActiveFile()!;
+        const file = editor.editorComponent?.file ?? this.app.workspace.getActiveFile();
         if (!file || !isMarkdownFile(file)) {
           return;
         }

@@ -14,7 +14,7 @@ import { createRoot } from 'react-dom/client';
 import L from '../../L';
 import ModalContent from './ModalContent';
 import Target from '../common/Target';
-import { waitForAsyncRenders } from 'src/utils';
+import { getMetadataMap, waitForAsyncRenders } from 'src/utils';
 import { copy } from 'src/utils/capture';
 
 export default async function (
@@ -73,8 +73,7 @@ export default async function (
     modal.open();
     const root = createRoot(modal.contentEl);
 
-    /* @ts-ignore */
-    const metadataMap: Record<string, { type: MetadataType }> = app.metadataCache.getAllPropertyInfos();
+    const metadataMap = getMetadataMap(app);
 
     root.render(
       <ModalContent

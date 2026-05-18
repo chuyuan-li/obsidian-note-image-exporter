@@ -236,6 +236,7 @@ export async function saveMultipleFiles(
   await runWithConcurrency(tasks, 3);
 }
 
+const IMAGE_URL_CACHE_MAX_ENTRIES = 10;
 const imageUrlCache = new Map<string, string>();
 
 export function revokeAllImageUrls() {
@@ -250,7 +251,10 @@ export async function getRemoteImageUrl(url?: string) {
     return url;
   }
   if (imageUrlCache.has(url)) {
-    return imageUrlCache.get(url)!;
+    const cached = imageUrlCache.get(url)!;
+    imageUrlCache.delete(url);
+    imageUrlCache.set(url, cached);
+    return cached;
   }
   try {
     const response = await requestUrl({
@@ -259,6 +263,16 @@ export async function getRemoteImageUrl(url?: string) {
     });
     const blob = new Blob([response.arrayBuffer], { type: response.headers['content-type'] || 'application/octet-stream' });
     const res = URL.createObjectURL(blob);
+    if (imageUrlCache.size >= IMAGE_URL_CACHE_MAX_ENTRIES) {
+      const oldestUrl = imageUrlCache.keys().next().value;
+      if (oldestUrl !== undefined) {
+        const oldestObjectUrl = imageUrlCache.get(oldestUrl);
+        if (oldestObjectUrl) {
+          URL.revokeObjectURL(oldestObjectUrl);
+        }
+        imageUrlCache.delete(oldestUrl);
+      }
+    }
     imageUrlCache.set(url, res);
     return res;
   } catch (error) {
@@ -308,7 +322,11 @@ export async function saveAll(
         pageCanvas.width = fullCanvas.width;
         pageCanvas.height = Math.round(height * finalScale);
 
-        const ctx = pageCanvas.getContext('2d')!;
+        const ctx = pageCanvas.getContext('2d');
+        if (!ctx) {
+          new Notice(L.saveFail());
+          return;
+        }
         ctx.drawImage(
           fullCanvas,
           0, Math.round(startY * finalScale),
@@ -334,8 +352,12 @@ export async function saveAll(
       }
 
       const filename = `${title.replaceAll(/\s+/g, '_')}.pdf`;
+      if (!pdf) {
+        new Notice(L.saveFail());
+        return;
+      }
       if (Platform.isMobile) {
-        const filePath = await saveToVault(app, new Blob([pdf!.output('arraybuffer')]), filename);
+        const filePath = await saveToVault(app, new Blob([pdf.output('arraybuffer')]), filename);
         new Notice(L.saveSuccess({ filePath }));
       } else {
         pdf?.save(filename);
@@ -365,7 +387,11 @@ export async function saveAll(
         pageCanvas.width = fullCanvas.width;
         pageCanvas.height = Math.round(height * finalScale);
 
-        const ctx = pageCanvas.getContext('2d')!;
+        const ctx = pageCanvas.getContext('2d');
+        if (!ctx) {
+          new Notice(L.saveFail());
+          return;
+        }
         ctx.drawImage(
           fullCanvas,
           0, Math.round(startY * finalScale),
@@ -374,9 +400,13 @@ export async function saveAll(
           pageCanvas.width, pageCanvas.height,
         );
 
-        const blob = await new Promise<Blob>((resolve) => {
-          pageCanvas.toBlob((b) => resolve(b!), mime, 0.92);
+        const blob = await new Promise<Blob | null>((resolve) => {
+          pageCanvas.toBlob(resolve, mime, 0.92);
         });
+        if (!blob) {
+          new Notice(L.saveFail());
+          return;
+        }
         const filename = `${title.replaceAll(/\s+/g, '_')}_${i + 1}.${ext}`;
         blobs.push({ blob, filename });
       }

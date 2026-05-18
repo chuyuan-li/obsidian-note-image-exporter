@@ -75,6 +75,30 @@ export function getMetadata(file: TFile, app: App) {
   return app.metadataCache.getFileCache(file)?.frontmatter;
 }
 
+const metadataTypes = new Set<MetadataType>([
+  'text',
+  'date',
+  'datetime',
+  'checkbox',
+  'multitext',
+  'number',
+  'tags',
+  'aliases',
+]);
+
+function isMetadataType(type: string): type is MetadataType {
+  return metadataTypes.has(type as MetadataType);
+}
+
+export function getMetadataMap(app: App): Record<string, { type: MetadataType }> {
+  return Object.fromEntries(
+    Object.entries(app.metadataCache.getAllPropertyInfos()).map(([name, info]) => [
+      name,
+      { type: isMetadataType(info.type) ? info.type : 'text' },
+    ]),
+  );
+}
+
 export async function delay(time: number) {
   return new Promise(resolve => {
     window.setTimeout(() => {
