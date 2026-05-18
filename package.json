@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "author": "chuyuan-li",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/lodash": "^4.17.13",
     "@types/node": "^22.10.2",

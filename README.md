@@ -1,4 +1,4 @@
-# Image Share — Obsidian Plugin
+# Note Image Exporter — Obsidian Plugin
 
 Export Obsidian notes as images (PNG/JPG/WebP/PDF) with pagination, watermark, and batch export.
 
@@ -25,14 +25,14 @@ npm run build
 Copy `main.js`, `manifest.json`, and `styles.css` to:
 
 ```
-<Vault>/.obsidian/plugins/image-share/
+<Vault>/.obsidian/plugins/note-image-exporter/
 ```
 
-Then enable **Image Share** in **Settings → Community plugins**.
+Then enable **Note Image Exporter** in **Settings → Community plugins**.
 
 ### From Community Plugins
 
-Search "Image Share" in Obsidian's Community Plugins browser and install.
+Search "Note Image Exporter" in Obsidian's Community Plugins browser and install.
 
 ## Usage
 
@@ -129,4 +129,4 @@ Created by [chuyuan-li](https://github.com/chuyuan-li).
 
 ## License
 
-ISC
+MIT

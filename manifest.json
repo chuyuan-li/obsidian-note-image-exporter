@@ -1,8 +1,8 @@
 {
-	"id": "image-share",
-	"name": "Image Share",
+	"id": "note-image-exporter",
+	"name": "Note Image Exporter",
 	"version": "1.0.0",
-	"minAppVersion": "1.4.0",
+	"minAppVersion": "1.5.7",
 	"description": "Export and share your Obsidian notes as images.",
 	"author": "chuyuan-li",
 	"authorUrl": "https://github.com/chuyuan-li",
