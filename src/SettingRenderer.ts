@@ -10,7 +10,7 @@ import type { SettingItem } from './formConfig';
 import L from './L';
 import FormItems from './components/common/form/FormItems';
 
-const REPOSITORY = 'chuyuan-li/obsidian-image-share';
+const REPOSITORY = 'chuyuan-li/obsidian-note-image-exporter';
 const REPOSITORY_URL = `https://github.com/${REPOSITORY}`;
 
 const SettingsForm: FC<{
