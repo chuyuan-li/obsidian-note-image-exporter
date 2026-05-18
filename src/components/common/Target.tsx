@@ -88,7 +88,7 @@ const Target = forwardRef<
     if (!contentRef.current) {
       return;
     }
-    contentRef.current.innerHTML = '';
+    contentRef.current.empty();
     Array.from(markdownEl.childNodes).forEach(child => {
       if (child.nodeType === Node.TEXT_NODE) {
         if (child.textContent) {
@@ -118,7 +118,7 @@ const Target = forwardRef<
   }), [clipRef.current, rootRef.current]);
 
   useEffect(() => {
-    (async () => {
+    void (async () => {
       const props: WatermarkProps = {
         monitor: false,
         mode: 'interval',
@@ -247,4 +247,3 @@ const Target = forwardRef<
 });
 
 export default Target;
-

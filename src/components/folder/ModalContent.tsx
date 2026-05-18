@@ -30,7 +30,7 @@ const ModalContent: FC<{
 
   useEffect(() => {
     let cancelled = false;
-    getAvailableFormats().then((formats) => {
+    void getAvailableFormats().then((formats) => {
       if (!cancelled) {
         setAvailableFormats([...formats]);
       }
@@ -220,7 +220,12 @@ const ModalContent: FC<{
               }}
             ></div>
           </div>
-          <button disabled={selectFiles.length === 0} onClick={exportAll}>
+          <button
+            disabled={selectFiles.length === 0}
+            onClick={() => {
+              void exportAll();
+            }}
+          >
             {L.exportAll()}
           </button>
         </div>

@@ -16,7 +16,7 @@ export async function waitForAsyncRenders(
   return new Promise((resolve) => {
     let resolved = false;
 
-    const timer = setTimeout(() => {
+    const timer = window.setTimeout(() => {
       if (!resolved) {
         resolved = true;
         observer.disconnect();
@@ -29,7 +29,7 @@ export async function waitForAsyncRenders(
       if (mermaidSvgs.length >= mermaidBlocks.length) {
         if (!resolved) {
           resolved = true;
-          clearTimeout(timer);
+          window.clearTimeout(timer);
           observer.disconnect();
           resolve();
         }

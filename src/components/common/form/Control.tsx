@@ -38,7 +38,7 @@ const Control: FC<{
         setProcessedImageUrl(value as string | undefined);
       }
     };
-    processImage();
+    void processImage();
   }, [value, fieldSchema.type]);
 
   const upload = async () => {
@@ -163,7 +163,9 @@ const Control: FC<{
                 style={{ display: 'none' }}
                 type='file'
                 ref={inputReference}
-                onChange={upload}
+                onChange={() => {
+                  void upload();
+                }}
               />
             </button>
             <button onClick={select}>
@@ -216,7 +218,7 @@ const Control: FC<{
               };
 
               modal.open();
-              setTimeout(() => input.focus(), 0);
+              window.setTimeout(() => input.focus(), 0);
             }}>
               {L.imageUrl()}
             </button>

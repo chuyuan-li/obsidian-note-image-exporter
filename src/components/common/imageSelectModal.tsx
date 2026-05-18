@@ -106,7 +106,9 @@ const ImageSelect: FC<{
         <button
           className='mod-cta'
           disabled={!selected}
-          onClick={submit}
+          onClick={() => {
+            void submit();
+          }}
           style={{marginRight: 40}}
         >
           {L.imageSelect.select()}

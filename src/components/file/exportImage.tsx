@@ -25,7 +25,7 @@ export default async function (
   frontmatter: FrontMatterCache | undefined,
   type: 'file' | 'selection',
 ) {
-  const el = document.createElement('div');
+  const el = activeDocument.createElement('div');
   const skipConfig = type === 'selection' && settings.quickExportSelection;
 
   if (skipConfig) {
@@ -36,7 +36,7 @@ export default async function (
     div.style.position = 'fixed';
     div.style.top = '-9999px';
     div.style.left = '-9999px';
-    document.body.appendChild(div);
+    activeDocument.body.appendChild(div);
     const root = createRoot(div);
     root.render(
       <Target
@@ -86,7 +86,7 @@ export default async function (
     await loadDocumentContent(app, el, markdown, file.path);
 
     const loadedEvent = new CustomEvent("export-image-content-loaded");
-    window.document.dispatchEvent(loadedEvent);
+    activeDocument.dispatchEvent(loadedEvent);
 
     modal.onClose = () => {
       root?.unmount();
@@ -105,7 +105,7 @@ function waitForElement(parent: HTMLElement, selector: string, timeout: number):
     const observer = new MutationObserver(() => {
       const el = parent.querySelector(selector) as HTMLElement | null;
       if (el) {
-        clearTimeout(timer);
+        window.clearTimeout(timer);
         observer.disconnect();
         resolve(el);
       }
@@ -119,21 +119,21 @@ function waitForElement(parent: HTMLElement, selector: string, timeout: number):
 }
 
 async function loadDocumentContent(app: App, el: HTMLElement, markdown: string, filePath: string) {
-  const container = document.createElement('div');
+  const container = activeDocument.createElement('div');
   try {
     container.className = 'markdown-preview-view markdown-rendered';
     container.style.position = 'fixed';
     container.style.top = '-9999px';
     container.style.left = '-9999px';
     container.style.width = '1200px';
-    document.body.appendChild(container);
+    activeDocument.body.appendChild(container);
 
     await MarkdownRenderer.render(app, markdown, container, filePath, new MarkdownRenderChild(container));
     await waitForAsyncRenders(container);
 
     container.querySelectorAll('.edit-block-button, .callout-fold').forEach(it => it.remove());
 
-    const styleEl = document.createElement('style');
+    const styleEl = activeDocument.createElement('style');
     styleEl.textContent = `
       .export-image-root .list-bullet {
           margin-left: -24px !important;
@@ -147,7 +147,7 @@ async function loadDocumentContent(app: App, el: HTMLElement, markdown: string, 
     `;
     container.prepend(styleEl);
 
-    el.innerHTML = container.innerHTML;
+    el.replaceChildren(...Array.from(container.childNodes, child => child.cloneNode(true)));
     return el;
   } catch (error) {
     console.error('[ExportImage] Error:', error);

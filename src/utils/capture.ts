@@ -11,14 +11,14 @@ import { calculateSplitPositions, getElementMeasures } from './split';
 
 function saveAs(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
+  const a = activeDocument.createElement('a');
   a.href = url;
   a.download = filename;
   a.style.display = 'none';
-  document.body.appendChild(a);
+  activeDocument.body.appendChild(a);
   a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
+  window.setTimeout(() => {
+    activeDocument.body.removeChild(a);
     URL.revokeObjectURL(url);
   }, 100);
 }
@@ -175,11 +175,11 @@ export async function saveMultipleFiles(
 
   const tasks = files.map(file => async () => {
     // Each concurrent task gets its own temporary container
-    const tempContainer = document.createElement('div');
+    const tempContainer = activeDocument.createElement('div');
     tempContainer.style.position = 'fixed';
     tempContainer.style.top = '-9999px';
     tempContainer.style.left = '-9999px';
-    document.body.appendChild(tempContainer);
+    activeDocument.body.appendChild(tempContainer);
     let cleanup: (() => void) | undefined;
 
     try {
@@ -298,7 +298,7 @@ export async function saveAll(
       let pdf: JsPdf | undefined;
 
       for (const { startY, height } of splitPositions) {
-        const pageCanvas = document.createElement('canvas');
+        const pageCanvas = activeDocument.createElement('canvas');
         pageCanvas.width = fullCanvas.width;
         pageCanvas.height = Math.round(height * finalScale);
 
@@ -355,7 +355,7 @@ export async function saveAll(
       for (let i = 0; i < splitPositions.length; i++) {
         const { startY, height } = splitPositions[i];
 
-        const pageCanvas = document.createElement('canvas');
+        const pageCanvas = activeDocument.createElement('canvas');
         pageCanvas.width = fullCanvas.width;
         pageCanvas.height = Math.round(height * finalScale);
 

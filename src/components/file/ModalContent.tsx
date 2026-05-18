@@ -269,7 +269,7 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
 
   useEffect(() => {
     let cancelled = false;
-    getAvailableFormats().then((formats) => {
+    void getAvailableFormats().then((formats) => {
       if (!cancelled) {
         setAvailableFormats([...formats]);
       }
@@ -300,7 +300,7 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
 
   useEffect(() => {
     const calculateHeight = () => {
-      const height = document.querySelector('.modal-container')?.clientHeight;
+      const height = activeDocument.querySelector('.modal-container')?.clientHeight;
       if (height) {
         setMainHeight(height - 160);
       }
@@ -310,36 +310,36 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
     calculateHeight();
 
     // 监听窗口大小变化
-    window.addEventListener('resize', calculateHeight);
+    activeWindow.addEventListener('resize', calculateHeight);
 
     // 监听内容加载事件
     const handleContentLoaded = () => {
       // 给一个小延迟确保内容完全加载
-      setTimeout(() => {
+      window.setTimeout(() => {
         setIsLoading(false);
       }, 100);
     };
 
-    window.document.addEventListener("export-image-content-loaded", handleContentLoaded);
+    activeDocument.addEventListener("export-image-content-loaded", handleContentLoaded);
 
     // 也检查markdownEl是否已准备好
-    if (markdownEl && markdownEl instanceof HTMLElement && markdownEl.innerHTML && markdownEl.innerHTML.length > 0) {
-      setTimeout(() => {
+    if (markdownEl && markdownEl.instanceOf(HTMLElement) && markdownEl.innerHTML && markdownEl.innerHTML.length > 0) {
+      window.setTimeout(() => {
         setIsLoading(false);
       }, 100);
     }
 
     return () => {
-      window.removeEventListener('resize', calculateHeight);
-      window.document.removeEventListener("export-image-content-loaded", handleContentLoaded);
+      activeWindow.removeEventListener('resize', calculateHeight);
+      activeDocument.removeEventListener("export-image-content-loaded", handleContentLoaded);
     };
   }, []);
 
   useEffect(() => {
     // 当markdownEl准备好时，更新loading状态
-    if (markdownEl && markdownEl instanceof HTMLElement && markdownEl.innerHTML && markdownEl.innerHTML.length > 0) {
+    if (markdownEl && markdownEl.instanceOf(HTMLElement) && markdownEl.innerHTML && markdownEl.innerHTML.length > 0) {
       // 给一个小延迟确保内容完全加载
-      setTimeout(() => {
+      window.setTimeout(() => {
         setIsLoading(false);
       }, 100);
     }
@@ -349,10 +349,10 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
       setIsLoading(false);
     };
     
-    window.document.addEventListener("export-image-content-loaded", handleContentLoaded);
+    activeDocument.addEventListener("export-image-content-loaded", handleContentLoaded);
     
     return () => {
-      window.document.removeEventListener("export-image-content-loaded", handleContentLoaded);
+      activeDocument.removeEventListener("export-image-content-loaded", handleContentLoaded);
     };
   }, [markdownEl]);
 
@@ -558,14 +558,24 @@ const ModalContent: FC<Props> = ({ markdownEl, settings, frontmatter, metadataMa
       <div className='export-image-preview-actions'>
         {pages === 1 && (
           <div>
-            <button onClick={handleCopy} disabled={processing || !allowCopy || isLoading}>
+            <button
+              onClick={() => {
+                void handleCopy();
+              }}
+              disabled={processing || !allowCopy || isLoading}
+            >
               {L.copy()}
             </button>
             {allowCopy || <p>{L.notAllowCopy({ format: formData.format.replace(/\d$/, '').toUpperCase() })}</p>}
           </div>
         )}
 
-        <button onClick={() => pages === 1 ? handleSave() : handleSaveAll()} disabled={processing || isLoading}>
+        <button
+          onClick={() => {
+            void (pages === 1 ? handleSave() : handleSaveAll());
+          }}
+          disabled={processing || isLoading}
+        >
           {Platform.isMobile ? L.saveVault() : L.save()}
         </button>
       </div>

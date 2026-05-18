@@ -106,7 +106,7 @@ export default class ExportImagePlugin extends Plugin {
         // If checking is true, we're simply "checking" if the command can be run.
         // If checking is false, then we want to actually perform the operation.
         if (!checking) {
-          (async () => {
+          void (async () => {
             const activeFile = this.app.workspace.getActiveFile();
             if (
               !activeFile
@@ -147,7 +147,7 @@ export default class ExportImagePlugin extends Plugin {
           return false;
         }
         if (!checking) {
-          exportImage(
+          void exportImage(
             this.app,
             this.settings,
             selection,
@@ -187,7 +187,11 @@ class ImageSettingTab extends PluginSettingTab {
     this.settingRenderer = new SettingRenderer(app, plugin, this.containerEl);
   }
 
-  async display(): Promise<void> {
+  display(): void {
+    void this.renderSettings();
+  }
+
+  private async renderSettings(): Promise<void> {
     await this.settingRenderer.render(await createSettingConfig(this.app));
   }
 }

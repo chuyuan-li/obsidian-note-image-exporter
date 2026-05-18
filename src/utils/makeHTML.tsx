@@ -17,7 +17,7 @@ function waitForElement(parent: HTMLElement, selector: string, timeout: number):
     const el = parent.querySelector(selector) as HTMLElement | null;
     if (el) { resolve(el); return; }
 
-    const timer = setTimeout(() => {
+    const timer = window.setTimeout(() => {
       observer.disconnect();
       reject(new Error(`Timeout waiting for ${selector}`));
     }, timeout);
@@ -25,7 +25,7 @@ function waitForElement(parent: HTMLElement, selector: string, timeout: number):
     const observer = new MutationObserver(() => {
       const el = parent.querySelector(selector) as HTMLElement | null;
       if (el) {
-        clearTimeout(timer);
+        window.clearTimeout(timer);
         observer.disconnect();
         resolve(el);
       }
@@ -42,14 +42,13 @@ export default async function makeHTML(
   container: HTMLElement,
 ): Promise<{ element: HTMLElement; cleanup: () => void }> {
   const markdown = await app.vault.cachedRead(file);
-  const element = document.createElement('div');
+  const element = activeDocument.createElement('div');
   await MarkdownRenderer.render(
     app,
     markdown,
     element.createDiv(),
     file.path,
     app.workspace.getActiveViewOfType(MarkdownView)
-    || app.workspace.activeLeaf?.view
     || new MarkdownRenderChild(element),
   );
   await waitForAsyncRenders(element);
