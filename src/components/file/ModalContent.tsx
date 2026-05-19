@@ -5,7 +5,7 @@ import React, {
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { isCopiable } from 'src/imageFormatTester';
 import { copy, save, saveAll } from '../../utils/capture';
-import { syncUnifiedPadding } from '../../utils/settings';
+import { hasValidExportWidth, syncUnifiedPadding } from '../../utils/settings';
 import L from '../../L';
 import Target, { type TargetRef } from '../common/Target';
 import FormItems from '../common/form/FormItems';
@@ -341,7 +341,7 @@ const ModalContent: FC<Props> = ({
   }, [markdownEl]);
 
   const [processing, setProcessing] = useState(false);
-  const [allowCopy, setAllowCopy] = useState(true);
+  const [allowCopy, setAllowCopy] = useState(false);
   const [rootHeight, setRootHeight] = useState(0);
   const [pages, setPages] = useState(1);
   const [scale, setScale] = useState(1);
@@ -388,6 +388,7 @@ const ModalContent: FC<Props> = ({
   }, [formData.split.mode]);
 
   useEffect(() => {
+    setAllowCopy(false);
     void isCopiable(formData.format)
       .then(result => {
         setAllowCopy(Boolean(result));
@@ -398,7 +399,7 @@ const ModalContent: FC<Props> = ({
   }, [formData.format]);
 
   const handleSave = useCallback(async () => {
-    if ((formData.width || 640) <= 20) {
+    if (!hasValidExportWidth(formData)) {
       new Notice(L.invalidWidth());
       return;
     }
@@ -421,7 +422,7 @@ const ModalContent: FC<Props> = ({
     }
   }, [root, formData.resolutionMode, formData.format, title, formData.width]);
   const handleCopy = useCallback(async () => {
-    if ((formData.width || 640) <= 20) {
+    if (!hasValidExportWidth(formData)) {
       new Notice(L.invalidWidth());
       return;
     }
@@ -438,7 +439,7 @@ const ModalContent: FC<Props> = ({
   }, [root, formData.resolutionMode, formData.format, title, formData.width]);
 
   const handleSaveAll = useCallback(async () => {
-    if ((formData.width || 640) <= 20) {
+    if (!hasValidExportWidth(formData)) {
       new Notice(L.invalidWidth());
       return;
     }

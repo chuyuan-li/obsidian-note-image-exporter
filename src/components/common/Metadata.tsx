@@ -175,7 +175,7 @@ const iconMap: Record<MetadataType, JSX.Element> = {
 };
 
 const Metadata: FC<PropType> = ({ type, name, value }) => {
-  if (['cssclasses'].contains(name)) {
+  if (['cssclasses'].includes(name)) {
     return null;
   }
 

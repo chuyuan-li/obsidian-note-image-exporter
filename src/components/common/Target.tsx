@@ -47,9 +47,12 @@ const Target = forwardRef<
     scale?: number;
     isProcessing: boolean;
     onSplitChange?: (positions: number[]) => void;
+    onReady?: () => void;
   }
->(({ frontmatter, setting, title, metadataMap, markdownEl, scale = 1, isProcessing, onSplitChange }, ref) => {
+>(({ frontmatter, setting, title, metadataMap, markdownEl, scale = 1, isProcessing, onSplitChange, onReady }, ref) => {
   const [watermarkProps, setWatermarkProps] = useState<WatermarkProps>({});
+  const [contentReady, setContentReady] = useState(false);
+  const [watermarkReady, setWatermarkReady] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const clipRef = useRef<HTMLDivElement>(null);
@@ -81,10 +84,12 @@ const Target = forwardRef<
       totalHeight: rootHeight,
     }, elements);
 
-    // 通知父组件分页变化
-    onSplitChange?.(lines);
     return lines;
-  }, [setting.split.height, setting.split.overlap, setting.split.mode, rootHeight, onSplitChange]);
+  }, [setting.split.height, setting.split.overlap, setting.split.mode, rootHeight]);
+
+  useEffect(() => {
+    onSplitChange?.(splitLines);
+  }, [onSplitChange, splitLines]);
 
   const splitLineStyle = useMemo(() => ({
     position: 'absolute',
@@ -100,6 +105,7 @@ const Target = forwardRef<
     if (!contentRef.current) {
       return;
     }
+    setContentReady(false);
     contentRef.current.empty();
     Array.from(markdownEl.childNodes).forEach(child => {
       if (child.nodeType === Node.TEXT_NODE) {
@@ -110,6 +116,7 @@ const Target = forwardRef<
         contentRef.current?.append(child.cloneNode(true));
       }
     });
+    setContentReady(true);
   }, [markdownEl]);
 
   useImperativeHandle(ref, () => ({
@@ -135,10 +142,11 @@ const Target = forwardRef<
         transform: '',
       });
     }
-  }), [clipRef.current, rootRef.current]);
+  }), []);
 
   useEffect(() => {
     let cancelled = false;
+    setWatermarkReady(false);
 
     void (async () => {
       const props: WatermarkProps = {
@@ -156,6 +164,7 @@ const Target = forwardRef<
       if (setting.watermark.type === 'text') {
         props.text = setting.watermark.text.content;
         props.fontSize = setting.watermark.text.fontSize || 16;
+        props.fontFamily = setting.watermark.text.fontFamily;
         props.fontColor = setting.watermark.text.color || '#cccccc';
         props.image = undefined;
       } else {
@@ -164,6 +173,7 @@ const Target = forwardRef<
 
       if (!cancelled) {
         setWatermarkProps(props);
+        setWatermarkReady(true);
       }
     })();
 
@@ -181,9 +191,28 @@ const Target = forwardRef<
     setting.watermark.type,
     setting.watermark.text.content,
     setting.watermark.text.fontSize,
+    setting.watermark.text.fontFamily,
     setting.watermark.text.color,
     setting.watermark.image.src,
   ]);
+
+  useEffect(() => {
+    if (!contentReady || !watermarkReady) {
+      return;
+    }
+    let secondRafId: number | undefined;
+    const rafId = window.requestAnimationFrame(() => {
+      secondRafId = window.requestAnimationFrame(() => {
+        onReady?.();
+      });
+    });
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      if (secondRafId !== undefined) {
+        window.cancelAnimationFrame(secondRafId);
+      }
+    };
+  }, [contentReady, onReady, watermarkReady]);
 
   return (
     <div ref={clipRef}>

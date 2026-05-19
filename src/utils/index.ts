@@ -40,13 +40,17 @@ export async function getSizeOfImage(
         width: Math.round(image.width / 2),
         height: Math.round(image.height / 2),
       });
-      URL.revokeObjectURL(url);
+      if (url.startsWith('blob:')) {
+        URL.revokeObjectURL(url);
+      }
       image.remove();
     });
 
     image.onerror = () => {
       reject(new Error(`Failed to load image: ${url}`));
-      URL.revokeObjectURL(url);
+      if (url.startsWith('blob:')) {
+        URL.revokeObjectURL(url);
+      }
       image.remove();
     };
 

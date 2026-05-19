@@ -18,3 +18,11 @@ export function syncUnifiedPadding(
 
   return nextSettings;
 }
+
+export function hasValidExportWidth(settings: ISettings): boolean {
+  return (
+    typeof settings.width === 'number'
+    && Number.isFinite(settings.width)
+    && settings.width > 20
+  );
+}

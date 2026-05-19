@@ -35,7 +35,18 @@ export function getElementMeasures(container: HTMLElement, mode: SplitMode): Ele
     });
   } else if (mode === 'auto') {
     // 查找所有段落元素的位置
-    const paragraphs = Array.from(container.find('.export-image-markdown>div').children);
+    const markdownContainer = container.querySelector<HTMLElement>('.export-image-markdown');
+    if (!markdownContainer) {
+      return [];
+    }
+    const contentRoot = (
+      markdownContainer.children.length === 1
+      && markdownContainer.firstElementChild instanceof HTMLElement
+      && markdownContainer.firstElementChild.tagName === 'DIV'
+    )
+      ? markdownContainer.firstElementChild
+      : markdownContainer;
+    const paragraphs = Array.from(contentRoot.children);
     const containerRect = container.getBoundingClientRect();
 
     return paragraphs.map((p, index) => {
@@ -62,6 +73,34 @@ export function getElementMeasures(container: HTMLElement, mode: SplitMode): Ele
   return [];
 }
 
+function calculateFixedPositions(
+  height: number,
+  overlap: number,
+  totalHeight: number,
+): SplitPosition[] {
+  if (totalHeight <= 0) {
+    return [];
+  }
+
+  const safeOverlap = Math.max(0, overlap);
+  const effectiveHeight = Math.max(height, safeOverlap + 50, 1);
+  const step = Math.max(1, effectiveHeight - safeOverlap);
+  const positions: SplitPosition[] = [];
+
+  for (let startY = 0; startY < totalHeight; startY += step) {
+    const pageHeight = Math.min(effectiveHeight, totalHeight - startY);
+    if (pageHeight <= 0) {
+      break;
+    }
+    positions.push({ startY, height: pageHeight });
+    if (startY + pageHeight >= totalHeight) {
+      break;
+    }
+  }
+
+  return positions;
+}
+
 /**
  * 计算分割位置
  * @param options 分割选项
@@ -78,12 +117,13 @@ export function calculateSplitPositions(
     positions.push({ startY: 0, height: totalHeight });
   } else if (mode === 'hr' && elements) {
     // 按分隔线切割
+    const splitPoints = elements
+      .map(el => el.top)
+      .filter(y => y > 0 && y < totalHeight)
+      .sort((a, b) => a - b);
     let lastY = 0;
-    elements.forEach((el, index) => {
-      const currentY = el.top;
-      if (index === 0) {
-        positions.push({ startY: 0, height: currentY });
-      } else {
+    splitPoints.forEach(currentY => {
+      if (currentY > lastY) {
         positions.push({ startY: lastY, height: currentY - lastY });
       }
       lastY = currentY;
@@ -92,22 +132,27 @@ export function calculateSplitPositions(
     if (lastY < totalHeight) {
       positions.push({ startY: lastY, height: totalHeight - lastY });
     }
-  } else if (mode === 'auto' && elements) {
+  } else if (mode === 'auto' && elements?.length) {
     // 按段落自动切割
     let currentStartY = 0;
     let currentHeight = 0;
+    const effectiveHeight = Math.max(height, 1);
 
-    for (let i = 0; i < elements.length - 1; i++) {
+    for (let i = 0; i < elements.length; i++) {
       const item = elements[i];
       currentHeight += item.height + (i === 0 ? item.top : 0);
-      if (currentHeight >= height) {
+      if (currentHeight >= effectiveHeight) {
         positions.push({ startY: currentStartY, height: currentHeight });
         currentStartY += currentHeight;
         currentHeight = 0;
         continue;
       }
-      const delta = height - currentHeight;
-      if (delta < elements[i + 1].height / 2) {
+      const nextItem = elements[i + 1];
+      if (!nextItem) {
+        continue;
+      }
+      const delta = effectiveHeight - currentHeight;
+      if (delta < nextItem.height / 2) {
         positions.push({ startY: currentStartY, height: currentHeight });
         currentStartY += currentHeight;
         currentHeight = 0;
@@ -119,26 +164,7 @@ export function calculateSplitPositions(
     }
   } else {
     // 固定高度模式
-    // 计算最小分割高度：重叠高度 + 50px
-    const minSplitHeight = 2 * overlap + 50;
-    // 使用设置的高度和最小高度中的较大值
-    const effectiveHeight = Math.max(height, minSplitHeight);
-    const firstPageHeight = Math.min(effectiveHeight, totalHeight);
-    const remainingHeight = totalHeight - firstPageHeight;
-    const additionalPages = Math.max(0, Math.ceil(remainingHeight / (effectiveHeight - overlap * 2)));
-
-    // 第一页
-    positions.push({ startY: 0, height: firstPageHeight });
-    let lastY = firstPageHeight;
-    // 后续页面
-    for (let i = 1; i <= additionalPages; i++) {
-      const startY = lastY - overlap;
-      const pageHeight = i === additionalPages
-        ? totalHeight - startY  // 最后一页：使用实际剩余高度
-        : effectiveHeight;      // 其他页：使用设定的分割高度
-      positions.push({ startY, height: pageHeight });
-      lastY = startY + pageHeight;
-    }
+    positions.push(...calculateFixedPositions(height, overlap, totalHeight));
   }
   return positions;
 }

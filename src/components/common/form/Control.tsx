@@ -15,6 +15,9 @@ const Control: FC<{
   app: App;
 }> = ({ fieldSchema, setting, update, app }) => {
   const value = get(setting, fieldSchema.path);
+  const [numberDraft, setNumberDraft] = useState<string | number | undefined>(
+    value as string | number | undefined,
+  );
   const [processedImageUrl, setProcessedImageUrl] = useState<string | undefined>(undefined);
   const inputReference = useRef<HTMLInputElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
@@ -23,6 +26,12 @@ const Control: FC<{
     set(newSetting, fieldSchema.path, value);
     update(newSetting);
   };
+
+  useEffect(() => {
+    if (fieldSchema.type === 'number') {
+      setNumberDraft(value as string | number | undefined);
+    }
+  }, [fieldSchema.path, fieldSchema.type, value]);
 
   useEffect(() => {
     if (iconRef.current) {
@@ -63,11 +72,24 @@ const Control: FC<{
       return (
         <input
           type='number'
-          value={value as string | number | undefined}
+          value={numberDraft ?? ''}
           onChange={e => {
-            onChange(e.target.value ? Number(e.target.value) : undefined);
+            const rawValue = e.target.value;
+            setNumberDraft(rawValue);
+            if (rawValue === '') {
+              return;
+            }
+            const nextValue = Number(rawValue);
+            if (Number.isFinite(nextValue)) {
+              onChange(nextValue);
+            }
           }
           }
+          onBlur={() => {
+            if (numberDraft === '') {
+              setNumberDraft(value as string | number | undefined);
+            }
+          }}
         />
       );
     }

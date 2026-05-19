@@ -4,12 +4,13 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { type App, TFile, TFolder } from 'obsidian';
+import { type App, Notice, TFile, TFolder } from 'obsidian';
 import L from 'src/L';
 import { delay, isMarkdownFile } from 'src/utils';
 import { saveMultipleFiles } from 'src/utils/capture';
 import { formatAvailable, getAvailableFormats } from 'src/settings';
 import FormItems from '../common/form/FormItems';
+import { hasValidExportWidth } from 'src/utils/settings';
 
 const ModalContent: FC<{
   settings: ISettings;
@@ -42,6 +43,10 @@ const ModalContent: FC<{
 
   const exportAll = useCallback(async () => {
     if (running) {
+      return;
+    }
+    if (!hasValidExportWidth(formData)) {
+      new Notice(L.invalidWidth());
       return;
     }
 

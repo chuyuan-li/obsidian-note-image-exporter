@@ -55,30 +55,28 @@ export async function isCreatable(type: FileFormat): Promise<boolean> {
     return createCache[type]!;
   }
 
+  const setCache = (value: boolean) => {
+    if (type.includes('png')) {
+      createCache.png0 = value;
+      createCache.png1 = value;
+    } else {
+      createCache[type] = value;
+    }
+  };
+
   const canvas = activeDocument.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
   const mime = getMime(type);
   return new Promise(resolve => {
     try {
-      canvas.toBlob(() => {
-        if (type.includes('png')) {
-          createCache.png0 = true;
-          createCache.png1 = true;
-        } else {
-          createCache[type] = true;
-        }
-
-        resolve(true);
+      canvas.toBlob(blob => {
+        const isSupported = Boolean(blob) && blob?.type === mime;
+        setCache(isSupported);
+        resolve(isSupported);
       }, mime);
     } catch {
-      if (type.includes('png')) {
-        createCache.png0 = false;
-        createCache.png1 = false;
-      } else {
-        createCache[type] = false;
-      }
-
+      setCache(false);
       resolve(false);
     }
   });

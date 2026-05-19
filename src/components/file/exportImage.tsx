@@ -16,6 +16,24 @@ import ModalContent from './ModalContent';
 import Target from '../common/Target';
 import { getMetadataMap, waitForAsyncRenders, waitForElement } from 'src/utils';
 import { copy } from 'src/utils/capture';
+import { hasValidExportWidth } from 'src/utils/settings';
+
+function waitForTargetReady(ready: Promise<void>, timeout = 2000): Promise<void> {
+  return new Promise(resolve => {
+    const timer = window.setTimeout(resolve, timeout);
+    ready.then(() => {
+      window.clearTimeout(timer);
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          resolve();
+        });
+      });
+    }).catch(() => {
+      window.clearTimeout(timer);
+      resolve();
+    });
+  });
+}
 
 export default async function (
   app: App,
@@ -29,6 +47,11 @@ export default async function (
   const skipConfig = type === 'selection' && settings.quickExportSelection;
 
   if (skipConfig) {
+    if (!hasValidExportWidth(settings)) {
+      new Notice(L.invalidWidth());
+      return;
+    }
+
     await loadDocumentContent(app, el, markdown, file.path);
 
     const div = createDiv();
@@ -40,20 +63,24 @@ export default async function (
     });
     activeDocument.body.appendChild(div);
     const root = createRoot(div);
-    root.render(
-      <Target
-        isProcessing={true}
-        markdownEl={el}
-        setting={{ ...settings, showMetadata: false, showFilename: false, split: { overlap: 0, height: 0, mode: 'none' } }}
-        frontmatter={{}}
-        title={file.basename}
-        metadataMap={{}}
-        app={app}
-      />,
-    );
+    const targetReady = new Promise<void>(resolve => {
+      root.render(
+        <Target
+          isProcessing={true}
+          markdownEl={el}
+          setting={{ ...settings, showMetadata: false, showFilename: false, split: { overlap: 0, height: 0, mode: 'none' } }}
+          frontmatter={undefined}
+          title={file.basename}
+          metadataMap={{}}
+          app={app}
+          onReady={resolve}
+        />,
+      );
+    });
 
     try {
       const target = await waitForElement(div, '.export-image-root', 2000);
+      await waitForTargetReady(targetReady);
       await copy(target, settings.resolutionMode, settings.format);
     } catch (e) {
       console.error(e);
@@ -100,6 +127,7 @@ export default async function (
 
 async function loadDocumentContent(app: App, el: HTMLElement, markdown: string, filePath: string) {
   const container = activeDocument.createElement('div');
+  let renderChild: MarkdownRenderChild | undefined;
   try {
     container.className = 'markdown-preview-view markdown-rendered';
     container.setCssStyles({
@@ -110,9 +138,8 @@ async function loadDocumentContent(app: App, el: HTMLElement, markdown: string, 
     });
     activeDocument.body.appendChild(container);
 
-    const renderChild = new MarkdownRenderChild(container);
+    renderChild = new MarkdownRenderChild(container);
     await MarkdownRenderer.render(app, markdown, container, filePath, renderChild);
-    renderChild.unload();
     await waitForAsyncRenders(container);
 
     container.querySelectorAll('.edit-block-button, .callout-fold').forEach(it => it.remove());
@@ -137,6 +164,7 @@ async function loadDocumentContent(app: App, el: HTMLElement, markdown: string, 
     console.error('[ExportImage] Error:', error);
     return el;
   } finally {
+    renderChild?.unload();
     container.remove();
   }
 }

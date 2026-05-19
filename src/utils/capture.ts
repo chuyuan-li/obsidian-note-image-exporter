@@ -8,6 +8,7 @@ import L from '../L';
 import makeHTML from './makeHTML';
 import { fileToBase64, getMime } from '.';
 import { calculateSplitPositions, getElementMeasures } from './split';
+import { hasValidExportWidth } from './settings';
 
 function saveAs(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
@@ -149,8 +150,8 @@ export async function copy(
   new Notice(L.copiedSuccess());
 }
 
-async function runWithConcurrency<T>(
-  tasks: (() => Promise<T>)[],
+async function runWithConcurrency(
+  tasks: (() => Promise<void>)[],
   concurrency: number,
 ): Promise<void> {
   const executing = new Set<Promise<void>>();
@@ -170,6 +171,11 @@ export async function saveMultipleFiles(
   onProgress: (finished: number) => void,
   app: App,
 ) {
+  if (!hasValidExportWidth(settings)) {
+    new Notice(L.invalidWidth());
+    return;
+  }
+
   let finished = 0;
   const { format, resolutionMode, split } = settings;
 
