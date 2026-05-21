@@ -12,9 +12,8 @@ export function isMarkdownFile(file: TFile | TAbstractFile) {
 }
 
 export async function fileToBase64(file: Blob): Promise<string> {
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
   return new Promise((resolve, reject) => {
+    const reader = new FileReader();
     reader.addEventListener('load', () => {
       resolve(reader.result as string);
     });
@@ -22,6 +21,12 @@ export async function fileToBase64(file: Blob): Promise<string> {
     reader.onerror = () => {
       reject(reader.error ?? new Error('Failed to read file'));
     };
+
+    reader.onabort = () => {
+      reject(new Error('File reading aborted'));
+    };
+
+    reader.readAsDataURL(file);
   });
 }
 

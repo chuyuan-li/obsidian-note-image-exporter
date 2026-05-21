@@ -4,7 +4,6 @@ import {
   type App,
   MarkdownRenderChild,
   MarkdownRenderer,
-  MarkdownView,
   type TFile,
 } from 'obsidian';
 import React from 'react';
@@ -40,8 +39,7 @@ export default async function makeHTML(
 ): Promise<{ element: HTMLElement; cleanup: () => void }> {
   const markdown = await app.vault.cachedRead(file);
   const element = activeDocument.createElement('div');
-  const activeMarkdownView = app.workspace.getActiveViewOfType(MarkdownView);
-  const renderChild = activeMarkdownView ?? new MarkdownRenderChild(element);
+  const renderChild = new MarkdownRenderChild(element);
   try {
     await MarkdownRenderer.render(
       app,
@@ -52,9 +50,7 @@ export default async function makeHTML(
     );
     await waitForAsyncRenders(element);
   } finally {
-    if (!activeMarkdownView) {
-      renderChild.unload();
-    }
+    renderChild.unload();
   }
 
   const metadataMap = getMetadataMap(app);

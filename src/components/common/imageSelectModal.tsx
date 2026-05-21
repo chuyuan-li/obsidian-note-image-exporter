@@ -24,7 +24,8 @@ const ImageSelect: FC<{
   const previewRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (keyword) {
-      const regExp = new RegExp(keyword.split('').join('.*'), 'i');
+      const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regExp = new RegExp(escapedKeyword.split('').join('.*'), 'i');
       setList(imageList.filter(file => regExp.test(file.path)));
     } else {
       setList(imageList);
