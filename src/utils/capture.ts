@@ -9,6 +9,7 @@ import makeHTML from './makeHTML';
 import { fileToBase64, getMime } from '.';
 import { calculateSplitPositions, getElementMeasures } from './split';
 import { hasValidExportWidth } from './settings';
+import { embedInvisibleAssetMark } from './invisibleAssetMark';
 
 function saveAs(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
@@ -31,21 +32,52 @@ function getSolidBackground(el: HTMLElement): string {
     : backgroundColor;
 }
 
-async function getBlob(el: HTMLElement, resolutionMode: ResolutionMode, format: Exclude<FileFormat, 'pdf'>): Promise<Blob> {
+async function canvasToBlob(canvas: HTMLCanvasElement, mime: string): Promise<Blob> {
+  const blob = await new Promise<Blob | null>((resolve) => {
+    canvas.toBlob(resolve, mime, 0.92);
+  });
+
+  if (!blob) {
+    throw new Error('Failed to generate image blob');
+  }
+
+  return blob;
+}
+
+function addAssetMark(canvas: HTMLCanvasElement, assetMark: ISettings['assetMark']) {
+  if (assetMark.enable) {
+    embedInvisibleAssetMark(canvas, assetMark.ownerId);
+  }
+}
+
+async function getBlob(
+  el: HTMLElement,
+  resolutionMode: ResolutionMode,
+  format: Exclude<FileFormat, 'pdf'>,
+  assetMark: ISettings['assetMark'],
+): Promise<Blob> {
   const scale = resolutionMode === '2x' ? 2 : resolutionMode === '3x' ? 3 : resolutionMode === '4x' ? 4 : 1;
   const pixelRatio = window.devicePixelRatio || 1;
   const MAX_SCALE = 4;
   const finalScale = Math.min(scale * pixelRatio, MAX_SCALE);
   const mime = getMime(format);
 
-  const blob = await htmlToImage.toBlob(el, {
+  const options = {
     width: el.clientWidth,
     height: el.clientHeight,
     pixelRatio: finalScale,
     cacheBust: true,
     type: mime,
     backgroundColor: format === 'jpg' ? getSolidBackground(el) : undefined,
-  });
+  };
+
+  if (assetMark.enable) {
+    const canvas = await htmlToImage.toCanvas(el, options);
+    addAssetMark(canvas, assetMark);
+    return canvasToBlob(canvas, mime);
+  }
+
+  const blob = await htmlToImage.toBlob(el, options);
 
   if (!blob) {
     throw new Error('Failed to generate image blob');
@@ -86,6 +118,7 @@ export async function save(
   resolutionMode: ResolutionMode,
   format: FileFormat,
   isMobile: boolean,
+  assetMark: ISettings['assetMark'],
 ) {
   const filename = `${title.replaceAll(/\s+/g, '_')}.${format.replace(/\d$/, '')}`;
   switch (format) {
@@ -93,7 +126,7 @@ export async function save(
     case 'webp':
     case 'png0':
     case 'png1': {
-      const blob: Blob = await getBlob(el, resolutionMode, format);
+      const blob: Blob = await getBlob(el, resolutionMode, format, assetMark);
       if (isMobile) {
         const filePath = await app.fileManager.getAvailablePathForAttachment(
           filename,
@@ -108,7 +141,7 @@ export async function save(
     }
 
     case 'pdf': {
-      const blob = await getBlob(el, resolutionMode, 'jpg');
+      const blob = await getBlob(el, resolutionMode, 'jpg', assetMark);
       const pdf = await makePdf(blob, el);
       if (isMobile) {
         const filePath = await app.fileManager.getAvailablePathForAttachment(
@@ -129,6 +162,7 @@ export async function copy(
   el: HTMLElement,
   resolutionMode: ResolutionMode,
   format: FileFormat,
+  assetMark: ISettings['assetMark'],
 ) {
   if (format === 'pdf') {
     new Notice(L.copyNotAllowed());
@@ -139,6 +173,7 @@ export async function copy(
     el,
     resolutionMode,
     format,
+    assetMark,
   );
   const data: ClipboardItem[] = [];
   data.push(
@@ -215,7 +250,7 @@ export async function saveMultipleFiles(
       };
 
       if (split.mode === 'none') {
-        await save(app, el, file.basename, resolutionMode, format, Platform.isMobile);
+        await save(app, el, file.basename, resolutionMode, format, Platform.isMobile, settings.assetMark);
       } else {
         await saveAll(
           target,
@@ -226,6 +261,7 @@ export async function saveMultipleFiles(
           split.mode,
           app,
           file.basename,
+          settings.assetMark,
         );
       }
     } catch (err) {
@@ -298,6 +334,7 @@ export async function saveAll(
   splitMode: SplitMode,
   app: App,
   title: string,
+  assetMark: ISettings['assetMark'],
 ) {
   try {
     // 计算需要分割的页数和位置
@@ -342,6 +379,7 @@ export async function saveAll(
           pageCanvas.width, pageCanvas.height,
         );
 
+        addAssetMark(pageCanvas, assetMark);
         const dataUrl = pageCanvas.toDataURL('image/jpeg', 0.92);
 
         if (!pdf) {
@@ -404,12 +442,8 @@ export async function saveAll(
           pageCanvas.width, pageCanvas.height,
         );
 
-        const blob = await new Promise<Blob | null>((resolve) => {
-          pageCanvas.toBlob(resolve, mime, 0.92);
-        });
-        if (!blob) {
-          failSave();
-        }
+        addAssetMark(pageCanvas, assetMark);
+        const blob = await canvasToBlob(pageCanvas, mime);
         const filename = `${title.replaceAll(/\s+/g, '_')}_${i + 1}.${ext}`;
         blobs.push({ blob, filename });
       }

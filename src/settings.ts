@@ -75,6 +75,10 @@ export const DEFAULT_SETTINGS: ISettings = {
 		x: 100,
 		y: 100,
 	},
+	assetMark: {
+		enable: false,
+		ownerId: "",
+	},
 	split: {
 		height: 1000,
 		overlap: 80,

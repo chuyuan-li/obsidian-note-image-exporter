@@ -43,6 +43,10 @@ declare type ISettings = {
     width?: number;
     height?: number;
   };
+  assetMark: {
+    enable: boolean;
+    ownerId?: string;
+  };
   split: {
     height: number;
     overlap: number;

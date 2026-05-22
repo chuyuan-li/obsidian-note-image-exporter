@@ -81,7 +81,7 @@ export default async function (
     try {
       const target = await waitForElement(div, '.export-image-root', 2000);
       await waitForTargetReady(targetReady);
-      await copy(target, settings.resolutionMode, settings.format);
+      await copy(target, settings.resolutionMode, settings.format, settings.assetMark);
     } catch (e) {
       console.error(e);
       new Notice(L.copyFail());

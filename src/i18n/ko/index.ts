@@ -140,6 +140,16 @@ const ko = {
         center: 'Center',
       },
     },
+    assetMark: {
+      enable: {
+        label: 'Embed hidden asset mark',
+        description: 'Embed a short hidden asset mark into exported image pixels for later matching. It is not a substitute for source files or copyright records.',
+      },
+      ownerId: {
+        label: 'Asset mark owner ID',
+        description: 'Use a stable brand or account ID to make hidden asset marks easier to verify later.',
+      },
+    },
     preview: '워터마크 미리보기',
     reset: '기본값으로 재설정',
     recursive: '하위 디렉토리의 노트 포함',

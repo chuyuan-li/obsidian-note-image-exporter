@@ -132,6 +132,16 @@ const pt = {
       x: 'Espaçamento horizontal da marca d\'água',
       y: 'Espaçamento vertical da marca d\'água',
     },
+    assetMark: {
+      enable: {
+        label: 'Embed hidden asset mark',
+        description: 'Embed a short hidden asset mark into exported image pixels for later matching. It is not a substitute for source files or copyright records.',
+      },
+      ownerId: {
+        label: 'Asset mark owner ID',
+        description: 'Use a stable brand or account ID to make hidden asset marks easier to verify later.',
+      },
+    },
     preview: 'Pré-visualização da marca d\'água',
     reset: 'Redefinir para o padrão',
     recursive: 'Incluir notas de subdiretórios',

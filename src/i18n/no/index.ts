@@ -139,6 +139,16 @@ const no = {
         center: 'Center',
       },
     },
+    assetMark: {
+      enable: {
+        label: 'Embed hidden asset mark',
+        description: 'Embed a short hidden asset mark into exported image pixels for later matching. It is not a substitute for source files or copyright records.',
+      },
+      ownerId: {
+        label: 'Asset mark owner ID',
+        description: 'Use a stable brand or account ID to make hidden asset marks easier to verify later.',
+      },
+    },
     preview: 'Forhåndsvisning av vannmerke',
     reset: 'Tilbakestill til standard',
     recursive: 'Inkluder notater fra undermapper',

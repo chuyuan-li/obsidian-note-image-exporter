@@ -469,6 +469,28 @@ type RootTranslation = {
 				center: string
 			}
 		}
+		assetMark: {
+			enable: {
+				/**
+				 * E​m​b​e​d​ ​h​i​d​d​e​n​ ​a​s​s​e​t​ ​m​a​r​k
+				 */
+				label: string
+				/**
+				 * E​m​b​e​d​ ​a​ ​s​h​o​r​t​ ​h​i​d​d​e​n​ ​a​s​s​e​t​ ​m​a​r​k​ ​i​n​t​o​ ​e​x​p​o​r​t​e​d​ ​i​m​a​g​e​ ​p​i​x​e​l​s​ ​f​o​r​ ​l​a​t​e​r​ ​m​a​t​c​h​i​n​g​.​ ​I​t​ ​i​s​ ​n​o​t​ ​a​ ​s​u​b​s​t​i​t​u​t​e​ ​f​o​r​ ​s​o​u​r​c​e​ ​f​i​l​e​s​ ​o​r​ ​c​o​p​y​r​i​g​h​t​ ​r​e​c​o​r​d​s​.
+				 */
+				description: string
+			}
+			ownerId: {
+				/**
+				 * A​s​s​e​t​ ​m​a​r​k​ ​o​w​n​e​r​ ​I​D
+				 */
+				label: string
+				/**
+				 * U​s​e​ ​a​ ​s​t​a​b​l​e​ ​b​r​a​n​d​ ​o​r​ ​a​c​c​o​u​n​t​ ​I​D​ ​t​o​ ​m​a​k​e​ ​h​i​d​d​e​n​ ​a​s​s​e​t​ ​m​a​r​k​s​ ​e​a​s​i​e​r​ ​t​o​ ​v​e​r​i​f​y​ ​l​a​t​e​r​.
+				 */
+				description: string
+			}
+		}
 		/**
 		 * W​a​t​e​r​m​a​r​k​ ​e​f​f​e​c​t​ ​p​r​e​v​i​e​w
 		 */
@@ -961,6 +983,28 @@ export type TranslationFunctions = {
 				 * Center
 				 */
 				center: () => LocalizedString
+			}
+		}
+		assetMark: {
+			enable: {
+				/**
+				 * Embed hidden asset mark
+				 */
+				label: () => LocalizedString
+				/**
+				 * Embed a short hidden asset mark into exported image pixels for later matching. It is not a substitute for source files or copyright records.
+				 */
+				description: () => LocalizedString
+			}
+			ownerId: {
+				/**
+				 * Asset mark owner ID
+				 */
+				label: () => LocalizedString
+				/**
+				 * Use a stable brand or account ID to make hidden asset marks easier to verify later.
+				 */
+				description: () => LocalizedString
 			}
 		}
 		/**

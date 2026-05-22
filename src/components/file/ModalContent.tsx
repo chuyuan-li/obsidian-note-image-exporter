@@ -237,6 +237,19 @@ const getFormSchema = (settings: ISettings, availableFormats: FileFormat[]): For
     when: (s) => s.watermark.enable && s.watermark.type === 'image',
   },
   {
+    label: L.setting.assetMark.enable.label(),
+    desc: L.setting.assetMark.enable.description(),
+    path: 'assetMark.enable',
+    type: 'boolean',
+  },
+  {
+    label: L.setting.assetMark.ownerId.label(),
+    desc: L.setting.assetMark.ownerId.description(),
+    path: 'assetMark.ownerId',
+    type: 'string',
+    when: { flag: true, path: 'assetMark.enable' },
+  },
+  {
     label: L.setting.metadata.label(),
     path: 'showMetadata',
     type: 'boolean',
@@ -414,6 +427,7 @@ const ModalContent: FC<Props> = ({
         formData.resolutionMode,
         formData.format,
         Platform.isMobile,
+        formData.assetMark,
       );
     } catch {
       new Notice(L.saveFail());
@@ -430,7 +444,7 @@ const ModalContent: FC<Props> = ({
 
     setProcessing(true);
     try {
-      await copy(root.current.contentElement, formData.resolutionMode, formData.format);
+      await copy(root.current.contentElement, formData.resolutionMode, formData.format, formData.assetMark);
     } catch {
       new Notice(L.copyFail());
     } finally {
@@ -456,6 +470,7 @@ const ModalContent: FC<Props> = ({
         formData.split.mode,
         app,
         title,
+        formData.assetMark,
       );
     } catch {
       new Notice(L.saveFail());

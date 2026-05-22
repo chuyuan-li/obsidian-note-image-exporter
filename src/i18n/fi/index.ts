@@ -138,6 +138,16 @@ const fi = {
         center: 'Center',
       },
     },
+    assetMark: {
+      enable: {
+        label: 'Embed hidden asset mark',
+        description: 'Embed a short hidden asset mark into exported image pixels for later matching. It is not a substitute for source files or copyright records.',
+      },
+      ownerId: {
+        label: 'Asset mark owner ID',
+        description: 'Use a stable brand or account ID to make hidden asset marks easier to verify later.',
+      },
+    },
     preview: 'Vesileiman esikatselu',
     reset: 'Palauta oletusasetukset',
     recursive: 'Sisällytä muistiinpanot alihakemistoista',
@@ -155,4 +165,4 @@ const fi = {
   splitInfoHr: 'Kuvan kokonaiskorkeus on {rootHeight}px, ja jakokorkeus on {splitHeight}px, joten {pages} kuvaa luodaan',
 } satisfies BaseTranslation;
 
-export default fi; 
+export default fi;

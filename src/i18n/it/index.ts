@@ -143,6 +143,16 @@ const it = {
         center: 'Center',
       },
     },
+    assetMark: {
+      enable: {
+        label: 'Embed hidden asset mark',
+        description: 'Embed a short hidden asset mark into exported image pixels for later matching. It is not a substitute for source files or copyright records.',
+      },
+      ownerId: {
+        label: 'Asset mark owner ID',
+        description: 'Use a stable brand or account ID to make hidden asset marks easier to verify later.',
+      },
+    },
     preview: 'Anteprima effetto filigrana',
     reset: 'Ripristina predefiniti',
     recursive: 'Includi note nelle sottodirectory',
@@ -160,4 +170,4 @@ const it = {
   splitInfoHr: 'L\'altezza totale dell\'immagine è {rootHeight}px, e l\'immagine verrà divisa dalla linea orizzontale, quindi verranno generate {pages} immagini',
 } satisfies Translation;
 
-export default it; 
+export default it;

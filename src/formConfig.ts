@@ -243,5 +243,18 @@ export const createSettingConfig = async (app: App): Promise<FormSchema<ISetting
       type: 'number',
       when: (settings) => settings.watermark.enable,
     },
+    {
+      path: 'assetMark.enable',
+      label: L.setting.assetMark.enable.label(),
+      desc: L.setting.assetMark.enable.description(),
+      type: 'boolean',
+    },
+    {
+      path: 'assetMark.ownerId',
+      label: L.setting.assetMark.ownerId.label(),
+      desc: L.setting.assetMark.ownerId.description(),
+      type: 'string',
+      when: { flag: true, path: 'assetMark.enable' },
+    },
   ];
 };

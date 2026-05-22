@@ -146,6 +146,16 @@ const zh = {
         center: '居中',
       },
     },
+    assetMark: {
+      enable: {
+        label: '嵌入隐藏资产标识',
+        description: '在导出图片像素中嵌入短隐藏资产标识，便于后续匹配。它不能替代源文件和版权存证。',
+      },
+      ownerId: {
+        label: '资产标识主体 ID',
+        description: '使用稳定的品牌或账号 ID，便于后续核验隐藏资产标识。',
+      },
+    },
     preview: '水印效果预览',
     reset: '重置为默认',
     recursive: '包含子目录中的笔记',

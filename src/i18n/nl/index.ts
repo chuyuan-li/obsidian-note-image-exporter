@@ -140,6 +140,16 @@ const nl = {
         center: 'Center',
       },
     },
+    assetMark: {
+      enable: {
+        label: 'Embed hidden asset mark',
+        description: 'Embed a short hidden asset mark into exported image pixels for later matching. It is not a substitute for source files or copyright records.',
+      },
+      ownerId: {
+        label: 'Asset mark owner ID',
+        description: 'Use a stable brand or account ID to make hidden asset marks easier to verify later.',
+      },
+    },
     preview: 'Voorbeeld van watermerk',
     reset: 'Reset naar standaard',
     recursive: 'Notities uit submappen insluiten',

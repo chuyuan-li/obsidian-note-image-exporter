@@ -96,6 +96,11 @@ const ModalContent: FC<{
       type: 'boolean',
     },
     {
+      label: L.setting.assetMark.enable.label(),
+      path: 'assetMark.enable',
+      type: 'boolean',
+    },
+    {
       label: L.setting.format.title(),
       path: 'format',
       type: 'select',
