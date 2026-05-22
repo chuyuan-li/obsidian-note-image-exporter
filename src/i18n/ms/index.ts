@@ -32,7 +32,7 @@ const ms = {
     imageWidth: {
       label: 'Lebar Imej Eksport Lalai',
       description:
-        'Tetapkan lebar imej yang dieksport dalam piksel. Lalai adalah 640px.',
+        'Tetapkan lebar imej yang dieksport dalam piksel. Lalai adalah 750px.',
     },
     split: {
       title: 'Eksport Imej',
@@ -50,7 +50,7 @@ const ms = {
       },
       overlap: {
         label: 'Overlapping',
-        description: 'Sett overlapp mellom sider for å unngå brutt innhold. Standard er 40px.',
+        description: 'Sett overlapp mellom sider for å unngå brutt innhold. Standard er 80px.',
       },
     },
     filename: {

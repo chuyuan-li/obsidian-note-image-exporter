@@ -32,7 +32,7 @@ const no = {
     imageWidth: {
       label: 'Standard eksportbredde for bilde',
       description:
-        'Angi bredden på det eksporterte bildet i piksler. Standarden er 640px.',
+        'Angi bredden på det eksporterte bildet i piksler. Standarden er 750px.',
     },
     split: {
       title: 'Bilde deling',
@@ -50,7 +50,7 @@ const no = {
       },
       overlap: {
         label: 'Overlapping',
-        description: 'Sett overlapp mellom sider for å unngå brutt innhold. Standard er 40px.',
+        description: 'Sett overlapp mellom sider for å unngå brutt innhold. Standard er 80px.',
       },
     },
 

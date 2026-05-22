@@ -145,7 +145,7 @@ type RootTranslation = {
 			 */
 			label: string
 			/**
-			 * S​e​t​ ​t​h​e​ ​w​i​d​t​h​ ​o​f​ ​t​h​e​ ​e​x​p​o​r​t​e​d​ ​i​m​a​g​e​ ​i​n​ ​p​i​x​e​l​.​ ​T​h​e​ ​d​e​f​a​u​l​t​ ​i​s​ ​6​4​0​p​x​.
+			 * B​a​s​e​ ​w​i​d​t​h​:​ ​S​e​t​ ​t​h​e​ ​c​o​n​t​e​n​t​ ​w​i​d​t​h​ ​o​f​ ​t​h​e​ ​e​x​p​o​r​t​e​d​ ​i​m​a​g​e​.​ ​C​a​p​t​u​r​e​d​ ​p​i​x​e​l​s​:​ ​R​e​s​o​l​u​t​i​o​n​ ​s​c​a​l​i​n​g​ ​a​n​d​ ​d​e​v​i​c​e​ ​D​P​R​ ​i​n​c​r​e​a​s​e​ ​t​h​e​ ​c​a​p​t​u​r​e​d​ ​p​i​x​e​l​ ​w​i​d​t​h​.​ ​D​e​f​a​u​l​t​:​ ​7​5​0​p​x​.
 			 */
 			description: string
 		}
@@ -155,7 +155,7 @@ type RootTranslation = {
 			 */
 			title: string
 			/**
-			 * S​e​t​ ​p​a​d​d​i​n​g​ ​f​o​r​ ​t​h​e​ ​e​x​p​o​r​t​e​d​ ​i​m​a​g​e​.​ ​T​h​e​ ​d​e​f​a​u​l​t​ ​i​s​ ​6​p​x​ ​f​o​r​ ​a​l​l​ ​s​i​d​e​s​.
+			 * P​a​d​d​i​n​g​:​ ​S​e​t​ ​p​a​d​d​i​n​g​ ​f​o​r​ ​t​h​e​ ​e​x​p​o​r​t​e​d​ ​i​m​a​g​e​.​ ​D​e​f​a​u​l​t​:​ ​2​4​p​x​ ​f​o​r​ ​a​l​l​ ​s​i​d​e​s​.
 			 */
 			description: string
 			/**
@@ -194,7 +194,7 @@ type RootTranslation = {
 				 */
 				label: string
 				/**
-				 * C​h​o​o​s​e​ ​w​h​e​t​h​e​r​ ​t​o​ ​s​p​l​i​t​ ​t​h​e​ ​i​m​a​g​e​,​ ​a​n​d​ ​h​o​w​ ​t​o​ ​s​p​l​i​t​.​ ​F​i​x​e​d​ ​h​e​i​g​h​t​ ​m​e​a​n​s​ ​e​a​c​h​ ​s​p​l​i​t​ ​i​m​a​g​e​ ​h​a​s​ ​a​ ​f​i​x​e​d​ ​h​e​i​g​h​t​,​ ​w​h​i​c​h​ ​m​a​y​ ​c​u​t​ ​o​f​f​ ​t​e​x​t​ ​a​t​ ​t​h​e​ ​s​p​l​i​t​ ​p​o​i​n​t​.​ ​S​p​l​i​t​ ​b​y​ ​h​o​r​i​z​o​n​t​a​l​ ​r​u​l​e​ ​m​e​a​n​s​ ​s​p​l​i​t​ ​t​h​e​ ​i​m​a​g​e​ ​b​y​ ​t​h​e​ ​h​o​r​i​z​o​n​t​a​l​ ​r​u​l​e​ ​i​n​ ​t​h​e​ ​d​o​c​u​m​e​n​t​.​ ​A​u​t​o​ ​s​p​l​i​t​ ​b​y​ ​p​a​r​a​g​r​a​p​h​ ​m​e​a​n​s​ ​s​p​l​i​t​ ​t​h​e​ ​i​m​a​g​e​ ​b​y​ ​t​h​e​ ​p​a​r​a​g​r​a​p​h​,​ ​e​n​s​u​r​i​n​g​ ​t​h​a​t​ ​a​ ​p​a​r​a​g​r​a​p​h​ ​i​s​ ​n​o​t​ ​s​p​l​i​t​ ​i​n​t​o​ ​t​w​o​ ​i​m​a​g​e​s​,​ ​a​n​d​ ​t​h​e​ ​h​e​i​g​h​t​ ​i​s​ ​a​s​ ​c​l​o​s​e​ ​a​s​ ​p​o​s​s​i​b​l​e​ ​t​o​ ​t​h​e​ ​s​p​l​i​t​ ​h​e​i​g​h​t​.
+				 * S​p​l​i​t​ ​m​o​d​e​:​ ​C​h​o​o​s​e​ ​w​h​e​t​h​e​r​ ​t​o​ ​s​p​l​i​t​ ​t​h​e​ ​i​m​a​g​e​.​ ​F​i​x​e​d​ ​h​e​i​g​h​t​:​ ​K​e​e​p​ ​e​a​c​h​ ​s​p​l​i​t​ ​i​m​a​g​e​ ​a​t​ ​a​ ​f​i​x​e​d​ ​h​e​i​g​h​t​,​ ​w​h​i​c​h​ ​m​a​y​ ​c​u​t​ ​o​f​f​ ​t​e​x​t​ ​a​t​ ​t​h​e​ ​s​p​l​i​t​ ​p​o​i​n​t​.​ ​H​o​r​i​z​o​n​t​a​l​ ​r​u​l​e​:​ ​S​p​l​i​t​ ​a​t​ ​h​o​r​i​z​o​n​t​a​l​ ​r​u​l​e​s​ ​i​n​ ​t​h​e​ ​d​o​c​u​m​e​n​t​.​ ​A​u​t​o​ ​b​y​ ​p​a​r​a​g​r​a​p​h​:​ ​K​e​e​p​ ​e​a​c​h​ ​p​a​r​a​g​r​a​p​h​ ​o​n​ ​o​n​e​ ​i​m​a​g​e​ ​a​n​d​ ​s​t​a​y​ ​a​s​ ​c​l​o​s​e​ ​a​s​ ​p​o​s​s​i​b​l​e​ ​t​o​ ​t​h​e​ ​s​p​l​i​t​ ​h​e​i​g​h​t​.
 				 */
 				description: string
 				/**
@@ -220,7 +220,7 @@ type RootTranslation = {
 				 */
 				label: string
 				/**
-				 * S​e​t​ ​t​h​e​ ​h​e​i​g​h​t​ ​o​f​ ​e​a​c​h​ ​s​p​l​i​t​ ​i​m​a​g​e​ ​i​n​ ​p​i​x​e​l​s​.​ ​T​h​e​ ​d​e​f​a​u​l​t​ ​i​s​ ​1​0​0​0​p​x​.
+				 * S​p​l​i​t​ ​h​e​i​g​h​t​:​ ​S​e​t​ ​t​h​e​ ​h​e​i​g​h​t​ ​o​f​ ​e​a​c​h​ ​s​p​l​i​t​ ​i​m​a​g​e​ ​i​n​ ​p​i​x​e​l​s​.​ ​D​e​f​a​u​l​t​:​ ​1​0​0​0​p​x​.
 				 */
 				description: string
 			}
@@ -230,7 +230,7 @@ type RootTranslation = {
 				 */
 				label: string
 				/**
-				 * S​e​t​ ​t​h​e​ ​o​v​e​r​l​a​p​ ​b​e​t​w​e​e​n​ ​a​d​j​a​c​e​n​t​ ​s​p​l​i​t​ ​i​m​a​g​e​s​ ​t​o​ ​p​r​e​v​e​n​t​ ​c​o​n​t​e​n​t​ ​f​r​o​m​ ​b​e​i​n​g​ ​c​u​t​ ​o​f​f​.​ ​T​h​e​ ​d​e​f​a​u​l​t​ ​i​s​ ​4​0​p​x​.
+				 * O​v​e​r​l​a​p​:​ ​S​e​t​ ​t​h​e​ ​o​v​e​r​l​a​p​ ​b​e​t​w​e​e​n​ ​a​d​j​a​c​e​n​t​ ​s​p​l​i​t​ ​i​m​a​g​e​s​ ​t​o​ ​p​r​e​v​e​n​t​ ​c​o​n​t​e​n​t​ ​f​r​o​m​ ​b​e​i​n​g​ ​c​u​t​ ​o​f​f​.​ ​D​e​f​a​u​l​t​:​ ​8​0​p​x​.
 				 */
 				description: string
 			}
@@ -251,7 +251,7 @@ type RootTranslation = {
 			 */
 			label: string
 			/**
-			 * R​e​n​d​e​r​ ​t​h​e​ ​e​x​p​o​r​t​e​d​ ​i​m​a​g​e​ ​a​t​ ​a​ ​m​u​l​t​i​p​l​e​ ​o​f​ ​t​h​e​ ​s​e​t​ ​w​i​d​t​h​.​ ​1​x​ ​i​s​ ​t​h​e​ ​o​r​i​g​i​n​a​l​ ​s​i​z​e​ ​w​i​t​h​ ​t​h​e​ ​s​m​a​l​l​e​s​t​ ​f​i​l​e​,​ ​s​u​i​t​a​b​l​e​ ​f​o​r​ ​w​e​b​ ​a​n​d​ ​s​t​a​n​d​a​r​d​ ​d​i​s​p​l​a​y​s​.​ ​2​x​ ​w​o​r​k​s​ ​w​e​l​l​ ​f​o​r​ ​R​e​t​i​n​a​ ​d​i​s​p​l​a​y​s​ ​a​n​d​ ​s​o​c​i​a​l​ ​m​e​d​i​a​.​ ​3​x​ ​i​s​ ​i​d​e​a​l​ ​f​o​r​ ​h​i​g​h​-​P​P​I​ ​m​o​b​i​l​e​ ​s​c​r​e​e​n​s​.​ ​4​x​ ​i​s​ ​b​e​s​t​ ​f​o​r​ ​p​r​i​n​t​i​n​g​ ​o​r​ ​s​c​e​n​a​r​i​o​s​ ​r​e​q​u​i​r​i​n​g​ ​h​e​a​v​y​ ​z​o​o​m​.​ ​H​i​g​h​e​r​ ​m​u​l​t​i​p​l​i​e​r​s​ ​p​r​o​d​u​c​e​ ​s​h​a​r​p​e​r​ ​i​m​a​g​e​s​ ​b​u​t​ ​l​a​r​g​e​r​ ​f​i​l​e​s​.
+			 * S​c​a​l​i​n​g​:​ ​R​e​n​d​e​r​ ​t​h​e​ ​e​x​p​o​r​t​e​d​ ​i​m​a​g​e​ ​a​t​ ​a​ ​m​u​l​t​i​p​l​e​ ​o​f​ ​t​h​e​ ​s​e​t​ ​w​i​d​t​h​.​ ​1​x​:​ ​O​r​i​g​i​n​a​l​ ​s​i​z​e​ ​w​i​t​h​ ​t​h​e​ ​s​m​a​l​l​e​s​t​ ​f​i​l​e​,​ ​s​u​i​t​a​b​l​e​ ​f​o​r​ ​w​e​b​ ​a​n​d​ ​s​t​a​n​d​a​r​d​ ​d​i​s​p​l​a​y​s​.​ ​2​x​:​ ​W​o​r​k​s​ ​w​e​l​l​ ​f​o​r​ ​R​e​t​i​n​a​ ​d​i​s​p​l​a​y​s​ ​a​n​d​ ​s​o​c​i​a​l​ ​m​e​d​i​a​.​ ​3​x​:​ ​I​d​e​a​l​ ​f​o​r​ ​h​i​g​h​-​P​P​I​ ​m​o​b​i​l​e​ ​s​c​r​e​e​n​s​.​ ​4​x​:​ ​B​e​s​t​ ​f​o​r​ ​p​r​i​n​t​i​n​g​ ​o​r​ ​s​c​e​n​a​r​i​o​s​ ​r​e​q​u​i​r​i​n​g​ ​h​e​a​v​y​ ​z​o​o​m​.​ ​H​i​g​h​e​r​ ​m​u​l​t​i​p​l​i​e​r​s​:​ ​P​r​o​d​u​c​e​ ​s​h​a​r​p​e​r​ ​i​m​a​g​e​s​ ​a​n​d​ ​l​a​r​g​e​r​ ​f​i​l​e​s​.
 			 */
 			description: string
 		}
@@ -267,7 +267,7 @@ type RootTranslation = {
 			 */
 			title: string
 			/**
-			 * D​e​f​a​u​l​t​ ​P​N​G​ ​f​o​r​m​a​t​ ​i​m​a​g​e​s​ ​s​h​o​u​l​d​ ​s​a​t​i​s​f​y​ ​t​h​e​ ​m​a​j​o​r​i​t​y​ ​o​f​ ​n​e​e​d​s​,​ ​b​u​t​ ​t​o​ ​b​e​t​t​e​r​ ​s​u​p​p​o​r​t​ ​u​s​e​r​ ​s​c​e​n​a​r​i​o​s​:​ ​1​.​ ​S​u​p​p​o​r​t​ ​f​o​r​ ​e​x​p​o​r​t​i​n​g​ ​i​m​a​g​e​s​ ​w​i​t​h​ ​b​o​t​h​ ​n​o​r​m​a​l​ ​a​n​d​ ​t​r​a​n​s​p​a​r​e​n​t​ ​b​a​c​k​g​r​o​u​n​d​s​;​ ​2​.​ ​S​u​p​p​o​r​t​ ​f​o​r​ ​e​x​p​o​r​t​i​n​g​ ​J​P​G​ ​i​m​a​g​e​s​ ​t​o​ ​a​c​h​i​e​v​e​ ​s​m​a​l​l​e​r​ ​f​i​l​e​ ​s​i​z​e​s​,​ ​t​h​o​u​g​h​ ​i​t​ ​m​a​y​ ​n​o​t​ ​b​e​ ​p​o​s​s​i​b​l​e​ ​t​o​ ​c​o​p​y​ ​d​i​r​e​c​t​l​y​ ​t​o​ ​t​h​e​ ​c​l​i​p​b​o​a​r​d​;​ ​3​.​ ​S​u​p​p​o​r​t​ ​f​o​r​ ​e​x​p​o​r​t​i​n​g​ ​t​o​ ​s​i​n​g​l​e​-​p​a​g​e​ ​P​D​F​ ​f​o​r​m​a​t​,​ ​w​h​i​c​h​ ​d​i​f​f​e​r​s​ ​f​r​o​m​ ​t​h​e​ ​u​s​u​a​l​ ​P​D​F​ ​p​a​p​e​r​ ​f​o​r​m​a​t​s​,​ ​p​l​e​a​s​e​ ​b​e​ ​c​a​r​e​f​u​l​ ​n​o​t​ ​t​o​ ​m​i​s​u​s​e​.
+			 * P​N​G​:​ ​C​o​v​e​r​s​ ​m​o​s​t​ ​e​x​p​o​r​t​s​ ​w​i​t​h​ ​a​ ​n​o​r​m​a​l​ ​b​a​c​k​g​r​o​u​n​d​.​ ​T​r​a​n​s​p​a​r​e​n​t​ ​P​N​G​:​ ​E​x​p​o​r​t​s​ ​i​m​a​g​e​s​ ​w​i​t​h​ ​a​ ​t​r​a​n​s​p​a​r​e​n​t​ ​b​a​c​k​g​r​o​u​n​d​.​ ​J​P​G​:​ ​P​r​o​d​u​c​e​s​ ​s​m​a​l​l​e​r​ ​f​i​l​e​s​,​ ​b​u​t​ ​m​a​y​ ​n​o​t​ ​c​o​p​y​ ​d​i​r​e​c​t​l​y​ ​t​o​ ​t​h​e​ ​c​l​i​p​b​o​a​r​d​.​ ​P​D​F​:​ ​E​x​p​o​r​t​s​ ​a​ ​s​i​n​g​l​e​-​p​a​g​e​ ​P​D​F​ ​r​a​t​h​e​r​ ​t​h​a​n​ ​a​ ​p​a​p​e​r​-​s​i​z​e​d​ ​P​D​F​.
 			 */
 			description: string
 			/**
@@ -476,7 +476,7 @@ type RootTranslation = {
 				 */
 				label: string
 				/**
-				 * E​m​b​e​d​ ​a​ ​s​h​o​r​t​ ​h​i​d​d​e​n​ ​a​s​s​e​t​ ​m​a​r​k​ ​i​n​t​o​ ​e​x​p​o​r​t​e​d​ ​i​m​a​g​e​ ​p​i​x​e​l​s​ ​f​o​r​ ​l​a​t​e​r​ ​m​a​t​c​h​i​n​g​.​ ​I​t​ ​i​s​ ​n​o​t​ ​a​ ​s​u​b​s​t​i​t​u​t​e​ ​f​o​r​ ​s​o​u​r​c​e​ ​f​i​l​e​s​ ​o​r​ ​c​o​p​y​r​i​g​h​t​ ​r​e​c​o​r​d​s​.
+				 * H​i​d​d​e​n​ ​m​a​r​k​:​ ​E​m​b​e​d​ ​a​ ​s​h​o​r​t​ ​a​s​s​e​t​ ​m​a​r​k​ ​i​n​t​o​ ​e​x​p​o​r​t​e​d​ ​i​m​a​g​e​ ​p​i​x​e​l​s​ ​f​o​r​ ​l​a​t​e​r​ ​m​a​t​c​h​i​n​g​.​ ​L​i​m​i​t​a​t​i​o​n​:​ ​I​t​ ​i​s​ ​n​o​t​ ​a​ ​s​u​b​s​t​i​t​u​t​e​ ​f​o​r​ ​s​o​u​r​c​e​ ​f​i​l​e​s​ ​o​r​ ​c​o​p​y​r​i​g​h​t​ ​r​e​c​o​r​d​s​.
 				 */
 				description: string
 			}
@@ -661,7 +661,7 @@ export type TranslationFunctions = {
 			 */
 			label: () => LocalizedString
 			/**
-			 * Set the width of the exported image in pixel. The default is 640px.
+			 * Base width: Set the content width of the exported image. Captured pixels: Resolution scaling and device DPR increase the captured pixel width. Default: 750px.
 			 */
 			description: () => LocalizedString
 		}
@@ -671,7 +671,7 @@ export type TranslationFunctions = {
 			 */
 			title: () => LocalizedString
 			/**
-			 * Set padding for the exported image. The default is 6px for all sides.
+			 * Padding: Set padding for the exported image. Default: 24px for all sides.
 			 */
 			description: () => LocalizedString
 			/**
@@ -710,7 +710,7 @@ export type TranslationFunctions = {
 				 */
 				label: () => LocalizedString
 				/**
-				 * Choose whether to split the image, and how to split. Fixed height means each split image has a fixed height, which may cut off text at the split point. Split by horizontal rule means split the image by the horizontal rule in the document. Auto split by paragraph means split the image by the paragraph, ensuring that a paragraph is not split into two images, and the height is as close as possible to the split height.
+				 * Split mode: Choose whether to split the image. Fixed height: Keep each split image at a fixed height, which may cut off text at the split point. Horizontal rule: Split at horizontal rules in the document. Auto by paragraph: Keep each paragraph on one image and stay as close as possible to the split height.
 				 */
 				description: () => LocalizedString
 				/**
@@ -736,7 +736,7 @@ export type TranslationFunctions = {
 				 */
 				label: () => LocalizedString
 				/**
-				 * Set the height of each split image in pixels. The default is 1000px.
+				 * Split height: Set the height of each split image in pixels. Default: 1000px.
 				 */
 				description: () => LocalizedString
 			}
@@ -746,7 +746,7 @@ export type TranslationFunctions = {
 				 */
 				label: () => LocalizedString
 				/**
-				 * Set the overlap between adjacent split images to prevent content from being cut off. The default is 40px.
+				 * Overlap: Set the overlap between adjacent split images to prevent content from being cut off. Default: 80px.
 				 */
 				description: () => LocalizedString
 			}
@@ -767,7 +767,7 @@ export type TranslationFunctions = {
 			 */
 			label: () => LocalizedString
 			/**
-			 * Render the exported image at a multiple of the set width. 1x is the original size with the smallest file, suitable for web and standard displays. 2x works well for Retina displays and social media. 3x is ideal for high-PPI mobile screens. 4x is best for printing or scenarios requiring heavy zoom. Higher multipliers produce sharper images but larger files.
+			 * Scaling: Render the exported image at a multiple of the set width. 1x: Original size with the smallest file, suitable for web and standard displays. 2x: Works well for Retina displays and social media. 3x: Ideal for high-PPI mobile screens. 4x: Best for printing or scenarios requiring heavy zoom. Higher multipliers: Produce sharper images and larger files.
 			 */
 			description: () => LocalizedString
 		}
@@ -783,7 +783,7 @@ export type TranslationFunctions = {
 			 */
 			title: () => LocalizedString
 			/**
-			 * Default PNG format images should satisfy the majority of needs, but to better support user scenarios: 1. Support for exporting images with both normal and transparent backgrounds; 2. Support for exporting JPG images to achieve smaller file sizes, though it may not be possible to copy directly to the clipboard; 3. Support for exporting to single-page PDF format, which differs from the usual PDF paper formats, please be careful not to misuse.
+			 * PNG: Covers most exports with a normal background. Transparent PNG: Exports images with a transparent background. JPG: Produces smaller files, but may not copy directly to the clipboard. PDF: Exports a single-page PDF rather than a paper-sized PDF.
 			 */
 			description: () => LocalizedString
 			/**
@@ -992,7 +992,7 @@ export type TranslationFunctions = {
 				 */
 				label: () => LocalizedString
 				/**
-				 * Embed a short hidden asset mark into exported image pixels for later matching. It is not a substitute for source files or copyright records.
+				 * Hidden mark: Embed a short asset mark into exported image pixels for later matching. Limitation: It is not a substitute for source files or copyright records.
 				 */
 				description: () => LocalizedString
 			}

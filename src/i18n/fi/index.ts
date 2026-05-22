@@ -32,7 +32,7 @@ const fi = {
     imageWidth: {
       label: 'Oletus vietävän kuvan leveys',
       description:
-        'Aseta vietävän kuvan leveys pikseleinä. Oletus on 640px.',
+        'Aseta vietävän kuvan leveys pikseleinä. Oletus on 750px.',
     },
     split: {
       title: 'Jaa kuva',
@@ -50,7 +50,7 @@ const fi = {
       },
       overlap: {
         label: 'Jaettujen kuvien päällekkäisyys',
-        description: 'Aseta vierekkäisten jaettujen kuvien päällekkäisyys pikseleinä, jotta sisältö ei katkea. Oletus on 40px.',
+        description: 'Aseta vierekkäisten jaettujen kuvien päällekkäisyys pikseleinä, jotta sisältö ei katkea. Oletus on 80px.',
       },
     },
     filename: {

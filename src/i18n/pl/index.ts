@@ -33,7 +33,7 @@ const pl = {
     imageWidth: {
       label: 'Domyślna szerokość eksportowanego obrazu',
       description:
-        'Ustaw szerokość eksportowanego obrazu w pikselach. Domyślnie jest 640px.',
+        'Ustaw szerokość eksportowanego obrazu w pikselach. Domyślnie jest 750px.',
     },
     split: {
       title: 'Podział obrazu',
@@ -51,7 +51,7 @@ const pl = {
       },
       overlap: {
         label: 'Przekrywanie',
-        description: 'Ustawia przekrywanie między stronami, aby uniknąć nagłego przerwania treści. Domyślnie jest 40px.',
+        description: 'Ustawia przekrywanie między stronami, aby uniknąć nagłego przerwania treści. Domyślnie jest 80px.',
       },
     },
     filename: {

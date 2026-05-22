@@ -34,11 +34,11 @@ const fr = {
     imageWidth: {
       label: 'Largeur d\'image exportée par défaut',
       description:
-        'Définissez la largeur de l\'image exportée en pixels. La valeur par défaut est 640px.',
+        'Définissez la largeur de l\'image exportée en pixels. La valeur par défaut est 750px.',
     },
     padding: {
       title: 'Marge d\'image',
-      description: 'Définissez le rembourrage pour l\'image exportée. La valeur par défaut est de 6px pour tous les côtés.',
+      description: 'Définissez le rembourrage pour l\'image exportée. La valeur par défaut est de 24px pour tous les côtés.',
       top: 'Rembourrage supérieur',
       right: 'Rembourrage droit',
       bottom: 'Rembourrage inférieur',
@@ -62,7 +62,7 @@ const fr = {
       },
       overlap: {
         label: 'Chevauchement',
-        description: 'Définit le chevauchement entre les pages pour éviter les coupures brusques de contenu. La valeur par défaut est 40px.',
+        description: 'Définit le chevauchement entre les pages pour éviter les coupures brusques de contenu. La valeur par défaut est 80px.',
       },
     },
     filename: {

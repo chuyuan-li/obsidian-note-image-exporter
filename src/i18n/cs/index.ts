@@ -33,7 +33,7 @@ const cs = {
     imageWidth: {
       label: 'Výchozí šířka exportovaného obrázku',
       description:
-        'Nastavte šířku exportovaného obrázku v pixelech. Výchozí je 640px.',
+        'Nastavte šířku exportovaného obrázku v pixelech. Výchozí je 750px.',
     },
     split: {
       title: 'Rozdělit obrázek',
@@ -51,7 +51,7 @@ const cs = {
       },
       overlap: {
         label: 'Překrytí',
-        description: 'Nastaví překrytí mezi stránkami, aby se zabránilo náhlému přerušení obsahu. Výchozí je 40px.',
+        description: 'Nastaví překrytí mezi stránkami, aby se zabránilo náhlému přerušení obsahu. Výchozí je 80px.',
       },
     },
     filename: {

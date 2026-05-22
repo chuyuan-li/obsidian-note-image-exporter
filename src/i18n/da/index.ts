@@ -33,7 +33,7 @@ const da = {
     imageWidth: {
       label: 'Standard eksportbilledbredde',
       description:
-        'Indstil bredden af det eksporterede billede i pixels. Standarden er 640px.',
+        'Indstil bredden af det eksporterede billede i pixels. Standarden er 750px.',
     },
     split: {
       title: 'Del billede',
@@ -51,7 +51,7 @@ const da = {
       },
       overlap: {
         label: 'Overlap',
-        description: 'Indstiller overlappet mellem sider for at undgå brat afbrydelse af indhold. Standard er 40px.',
+        description: 'Indstiller overlappet mellem sider for at undgå brat afbrydelse af indhold. Standard er 80px.',
       },
     },
     filename: {

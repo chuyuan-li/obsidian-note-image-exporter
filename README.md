@@ -1,127 +1,113 @@
-# Note Image Exporter — Obsidian Plugin
+# Note Image Exporter
 
-Export Obsidian notes as images (PNG/JPG/WebP/PDF) with pagination, watermark, and batch export.
+English | [中文](README.zh-CN.md)
+
+Export Obsidian notes, selections, and folders as shareable images or PDFs with live preview, split output, watermarks, and author info.
+
+![An exported Obsidian note with Mermaid, math, code, watermark, and author info](docs/readme/Note_Image_Exporter_Demo.png)
+
+Note Image Exporter keeps Obsidian rendering in the result, so a shared image can include content such as Mermaid diagrams, math, code blocks, callouts, metadata, and your current note styling.
+
+## Quick start
+
+1. Right-click a note, selected text, or folder.
+2. Choose **Export to image**, **Export selection to image**, or **Export all notes to image**.
+3. Adjust the preview, then copy the result or save it as a file.
+
+![Image export preview with export settings](docs/readme/export-preview.png)
 
 ## Features
 
-- **Formats**: PNG (lossless/lossy), JPG, WebP, PDF
-- **Pagination**: Fixed height, HR rule, or auto-split long notes
-- **Watermark**: Text or image overlay with opacity/rotation/position controls
-- **Author info**: Name, remark, avatar with align/position options
-- **Batch export**: Export entire folders with 3-concurrent processing
-- **Multi-language**: 20 locales via typesafe-i18n
-- **Quick export**: Copy selection or entire file to clipboard in one click
-- **Live preview**: Real-time preview in export modal with adjustable settings
-
-## Installation
-
-### Manual (for testing)
-
-```bash
-npm install
-npm run build
-```
-
-Copy `main.js`, `manifest.json`, and `styles.css` to:
-
-```
-<Vault>/.obsidian/plugins/note-image-exporter/
-```
-
-Then enable **Note Image Exporter** in **Settings → Community plugins**.
-
-### From Community Plugins
-
-Search "Note Image Exporter" in Obsidian's Community Plugins browser and install.
+- Export notes as PNG, JPG, WebP, or PDF.
+- Copy an image directly from the export preview when the selected format supports it.
+- Preview changes before export, including width, padding, format, resolution, watermark, and author info.
+- Split long notes with fixed-height, horizontal-rule, or automatic paragraph-based pagination.
+- Add text or image watermarks for shared images.
+- Add author name, extra text, avatar, alignment, and placement to exported images.
+- Export every Markdown note in a folder from the file menu.
+- Use the plugin in any of its 20 available languages.
 
 ## Usage
 
-- **Right-click file/folder** → Export to image
-- **Right-click editor** → Export selection to image / Export to image
-- **Command palette** → "Export as an image" / "Export selection to image"
-- **Settings** → Configure default format, resolution, padding, watermark, split mode
+### Export a note
 
-### Resolution Behavior
+- Right-click a Markdown file in the file explorer and choose **Export to image**.
+- Right-click inside the editor and choose **Export to image**.
+- Open the command palette and run **Export as an image**.
 
-| Setting | DPR=1 (Standard) | DPR=2 (Retina) | DPR=3 (Super Retina) |
-|---------|-----------------|----------------|---------------------|
-| 1x | 1× | 2× | 3× |
-| 2x | 2× | 4× | 4× (capped) |
-| 3x | 3× | 4× (capped) | 4× (capped) |
-| 4x | 4× | 4× (capped) | 4× (capped) |
+### Export a selection
 
-Maximum scale is capped at 4× to prevent OOM on large notes.
+- Select Markdown content in the editor.
+- Right-click and choose **Export selection to image**, or run the matching command from the command palette.
+- Enable quick selection export in the plugin settings when you want selected content copied with fewer steps.
 
-### Pagination Modes
+### Export a folder
 
-- **None**: Single image
-- **Fixed**: Split by pixel height
-- **HR**: Split at `---` horizontal rules in markdown
-- **Auto**: Intelligent split based on content boundaries
+- Right-click a folder in the file explorer and choose **Export all notes to image**.
+- Select the notes to export in the batch export dialog.
 
-### Padding Modes
+## Export options
 
-- **Unified** (default): Single value applies to all 4 sides
-- **Independent**: Configure top/right/bottom/left separately
+### Output formats
 
-Toggle between modes in the export modal or settings.
+| Format | Typical use |
+| --- | --- |
+| PNG | Default image output. Use the transparent PNG option when the background should stay transparent. |
+| JPG | Smaller image files for sharing when transparency is not needed. |
+| WebP | Compact image output when the platform supports it. |
+| PDF | A single-page PDF output based on the exported note image. |
+
+### Split modes
+
+| Mode | Behavior |
+| --- | --- |
+| No split | Export one image. |
+| Fixed height | Split by page height with configurable overlap. |
+| Horizontal rule | Split at Markdown horizontal rules such as `---`. |
+| Auto | Split near paragraph boundaries while targeting the configured page height. |
+
+### Layout and decoration
+
+- Set the export width and resolution scaling for the target sharing context.
+- Use uniform padding or configure top, right, bottom, and left padding independently.
+- Show the filename as a title when the note needs its Obsidian title in the image.
+- Include frontmatter metadata when it should be visible in the export.
+- Add author info above or below the note and align it to the left, center, or right.
+
+Resolution scaling is capped at 4x total output scale to reduce memory pressure on large notes.
+
+## Platform notes
+
+- On desktop, saved exports are downloaded as files.
+- On mobile, saved exports are written into the current vault.
+- Clipboard copy availability depends on the output format and platform. Save the file when copy is unavailable.
+
+## Installation
+
+### Community plugins
+
+Install **Note Image Exporter** from Obsidian's Community plugins browser when it is available there.
+
+### Manual installation
+
+1. Download `main.js`, `manifest.json`, and `styles.css` from a release.
+2. Put them in `<Vault>/.obsidian/plugins/note-image-exporter/`.
+3. Enable **Note Image Exporter** in **Settings** -> **Community plugins**.
+
+## Privacy and network use
+
+Notes are rendered and exported locally. The plugin does not send note content to a service.
+
+Network requests are only used for remote image URLs that you provide for export assets, such as an image watermark or avatar. Use local vault images or uploaded images when you do not want a remote image fetched during export.
 
 ## Development
 
 ```bash
 npm install
-npm run dev           # Watch mode with sourcemaps
-npm run build         # Type-check + production bundle
-npm run typesafe-i18n # Regenerate i18n types after editing translations
+npm run dev
+npm run build
+npm run typesafe-i18n
 ```
-
-### Project Structure
-
-```
-src/
-  ExportImagePlugin.ts    # Plugin lifecycle, commands, menus
-  settings.ts             # Default settings
-  formConfig.ts           # Settings UI schema
-  SettingRenderer.ts      # Obsidian-native settings tab renderer
-  L.ts                    # i18n singleton entry
-  components/
-    file/
-      exportImage.tsx     # Single file export flow
-      ModalContent.tsx    # Export preview modal with dynamic form schema
-    folder/
-      exportFolder.tsx    # Batch folder export
-    common/
-      Target.tsx          # Export preview component (watermark, metadata)
-      form/
-        FormItems.tsx     # Conditional form renderer with auto-indentation
-  utils/
-    capture.ts            # Core export: save, copy, split, batch
-    makeHTML.tsx          # Markdown → React rendering pipeline
-    split.ts              # Pagination position calculation
-    asyncRender.ts        # Mermaid/async content detection
-  i18n/                   # 20 locale translations
-```
-
-### Key Pipeline
-
-1. `exportImage.tsx` renders markdown via `MarkdownRenderer.render`
-2. `makeHTML.tsx` wraps it in React `<Target>` with watermark/metadata
-3. `capture.ts` captures via `html-to-image.toCanvas()` once, then crops per-page with Canvas `drawImage()`
-4. Desktop: download via `<a download>`; Mobile: save to vault via `app.vault.createBinary`
-
-## Settings
-
-| Setting | Default | Description |
-|---------|---------|-------------|
-| Width | 640px | Exported image width |
-| Resolution | 3x | Scale multiplier (capped at 4× total) |
-| Format | png0 | PNG lossless |
-| Show filename | true | Include filename as title |
-| Padding | 6px | Unified padding (all sides); toggle for independent control |
-| Watermark | disabled | Text or image overlay |
-| Split mode | none | Pagination behavior |
-| Split height | 1000px | Page height for fixed mode |
-| Overlap | 80px | Overlap between pages |
 
 ## Author
 

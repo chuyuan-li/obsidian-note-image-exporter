@@ -32,7 +32,7 @@ const hu = {
     imageWidth: {
       label: 'Alapértelmezett exportált képszelesség',
       description:
-        'Állítsd be az exportált kép szélességét pixelben. Az alapértelmezett érték 640px.',
+        'Állítsd be az exportált kép szélességét pixelben. Az alapértelmezett érték 750px.',
     },
     split: {
       title: 'Kép felosztás',
@@ -50,7 +50,7 @@ const hu = {
       },
       overlap: {
         label: 'Felosztott képek átfedése',
-        description: 'Állítsd be a szomszédos felosztott képek átfedését pixelben, hogy elkerüld a tartalom levágását. Az alapértelmezett érték 40px.',
+        description: 'Állítsd be a szomszédos felosztott képek átfedését pixelben, hogy elkerüld a tartalom levágását. Az alapértelmezett érték 80px.',
       },
     },
     filename: {

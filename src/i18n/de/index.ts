@@ -34,11 +34,11 @@ const de = {
     imageWidth: {
       label: 'Standardmäßige exportierte Bildbreite',
       description:
-        'Setzen Sie die Breite des exportierten Bildes in Pixel. Standardmäßig ist 640px.',
+        'Setzen Sie die Breite des exportierten Bildes in Pixel. Standardmäßig ist 750px.',
     },
     padding: {
       title: 'Bildrand',
-      description: 'Stellen Sie den Innenabstand für das exportierte Bild ein. Der Standardwert beträgt 6px für alle Seiten.',
+      description: 'Stellen Sie den Innenabstand für das exportierte Bild ein. Der Standardwert beträgt 24px für alle Seiten.',
       top: 'Oberer Abstand',
       right: 'Rechter Abstand',
       bottom: 'Unterer Abstand',
@@ -62,7 +62,7 @@ const de = {
       },
       overlap: {
         label: 'Überlappungsabstand',
-        description: 'Legt den Überlappungsabstand zwischen den Seiten fest, um abrupte Inhaltsabschnitte zu vermeiden. Standard ist 40px.',
+        description: 'Legt den Überlappungsabstand zwischen den Seiten fest, um abrupte Inhaltsabschnitte zu vermeiden. Standard ist 80px.',
       },
     },
     filename: {

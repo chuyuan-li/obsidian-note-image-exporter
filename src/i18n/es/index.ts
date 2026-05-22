@@ -31,11 +31,11 @@ const es = {
     title: 'Exportar como imagen',
     imageWidth: {
       label: 'Ancho de imagen exportada por defecto',
-      description: 'Establece el ancho de la imagen exportada en píxeles. El predeterminado es 640px.',
+      description: 'Establece el ancho de la imagen exportada en píxeles. El predeterminado es 750px.',
     },
     padding: {
       title: 'Margen de imagen',
-      description: 'Establece el relleno para la imagen exportada. El valor predeterminado es 6px para todos los lados.',
+      description: 'Establece el relleno para la imagen exportada. El valor predeterminado es 24px para todos los lados.',
       top: 'Relleno superior',
       right: 'Relleno derecho',
       bottom: 'Relleno inferior',
@@ -59,7 +59,7 @@ const es = {
       },
       overlap: {
         label: 'Sobreposición',
-        description: 'Establece la sobreposición entre páginas para evitar interrupciones abruptas en el contenido. El predeterminado es 40px.',
+        description: 'Establece la sobreposición entre páginas para evitar interrupciones abruptas en el contenido. El predeterminado es 80px.',
       },
     },
     filename: {

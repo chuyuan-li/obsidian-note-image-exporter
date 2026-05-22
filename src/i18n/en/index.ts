@@ -34,11 +34,11 @@ const en = {
     imageWidth: {
       label: 'Default exported image width',
       description:
-        'Set the width of the exported image in pixel. The default is 640px.',
+        'Base width: Set the content width of the exported image. Captured pixels: Resolution scaling and device DPR increase the captured pixel width. Default: 750px.',
     },
     padding: {
       title: 'Image Padding',
-      description: 'Set padding for the exported image. The default is 6px for all sides.',
+      description: 'Padding: Set padding for the exported image. Default: 24px for all sides.',
       unified: 'Uniform padding',
       all: 'Padding',
       top: 'Top padding',
@@ -50,7 +50,7 @@ const en = {
       title: 'Split Image',
       mode: {
         label: 'Split mode',
-        description: 'Choose whether to split the image, and how to split. Fixed height means each split image has a fixed height, which may cut off text at the split point. Split by horizontal rule means split the image by the horizontal rule in the document. Auto split by paragraph means split the image by the paragraph, ensuring that a paragraph is not split into two images, and the height is as close as possible to the split height.',
+        description: 'Split mode: Choose whether to split the image. Fixed height: Keep each split image at a fixed height, which may cut off text at the split point. Horizontal rule: Split at horizontal rules in the document. Auto by paragraph: Keep each paragraph on one image and stay as close as possible to the split height.',
         none: 'No split',
         fixed: 'Fixed height',
         hr: 'Split by horizontal rule',
@@ -58,11 +58,11 @@ const en = {
       },
       height: {
         label: 'Split image height',
-        description: 'Set the height of each split image in pixels. The default is 1000px.',
+        description: 'Split height: Set the height of each split image in pixels. Default: 1000px.',
       },
       overlap: {
         label: 'Split image overlap',
-        description: 'Set the overlap between adjacent split images to prevent content from being cut off. The default is 40px.',
+        description: 'Overlap: Set the overlap between adjacent split images to prevent content from being cut off. Default: 80px.',
       },
     },
     filename: {
@@ -72,7 +72,7 @@ const en = {
     },
     resolutionMode: {
       label: 'Resolution scaling',
-      description: 'Render the exported image at a multiple of the set width. 1x is the original size with the smallest file, suitable for web and standard displays. 2x works well for Retina displays and social media. 3x is ideal for high-PPI mobile screens. 4x is best for printing or scenarios requiring heavy zoom. Higher multipliers produce sharper images but larger files.',
+      description: 'Scaling: Render the exported image at a multiple of the set width. 1x: Original size with the smallest file, suitable for web and standard displays. 2x: Works well for Retina displays and social media. 3x: Ideal for high-PPI mobile screens. 4x: Best for printing or scenarios requiring heavy zoom. Higher multipliers: Produce sharper images and larger files.',
     },
     metadata: {
       label: 'Show metadata',
@@ -80,7 +80,7 @@ const en = {
     format: {
       title: 'Output file format',
       description:
-        'Default PNG format images should satisfy the majority of needs, but to better support user scenarios: 1. Support for exporting images with both normal and transparent backgrounds; 2. Support for exporting JPG images to achieve smaller file sizes, though it may not be possible to copy directly to the clipboard; 3. Support for exporting to single-page PDF format, which differs from the usual PDF paper formats, please be careful not to misuse.',
+        'PNG: Covers most exports with a normal background. Transparent PNG: Exports images with a transparent background. JPG: Produces smaller files, but may not copy directly to the clipboard. PDF: Exports a single-page PDF rather than a paper-sized PDF.',
       png0: 'png - default',
       png1: 'png - export transparent background image',
       jpg: 'jpg - export jpg image',
@@ -152,7 +152,7 @@ const en = {
     assetMark: {
       enable: {
         label: 'Embed hidden asset mark',
-        description: 'Embed a short hidden asset mark into exported image pixels for later matching. It is not a substitute for source files or copyright records.',
+        description: 'Hidden mark: Embed a short asset mark into exported image pixels for later matching. Limitation: It is not a substitute for source files or copyright records.',
       },
       ownerId: {
         label: 'Asset mark owner ID',

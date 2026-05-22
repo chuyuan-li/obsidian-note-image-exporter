@@ -32,7 +32,7 @@ const id = {
     imageWidth: {
       label: 'Lebar gambar ekspor default',
       description:
-        'Atur lebar gambar yang diekspor dalam piksel. Default adalah 640px.',
+        'Atur lebar gambar yang diekspor dalam piksel. Default adalah 750px.',
     },
     split: {
       title: 'Ekspor Gambar',
@@ -50,7 +50,7 @@ const id = {
       },
       overlap: {
         label: 'Overlapping',
-        description: 'Setel overlapping antara halaman untuk menghindari konten yang terputus secara tiba-tiba. Default adalah 40px.',
+        description: 'Setel overlapping antara halaman untuk menghindari konten yang terputus secara tiba-tiba. Default adalah 80px.',
       },
     },
     filename: {

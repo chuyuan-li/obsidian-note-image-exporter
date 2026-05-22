@@ -17,11 +17,6 @@ export const createSettingConfig = async (app: App): Promise<FormSchema<ISetting
       type: 'boolean',
     },
     {
-      path: 'showMetadata',
-      label: L.setting.metadata.label(),
-      type: 'boolean',
-    },
-    {
       path: 'width',
       label: L.setting.imageWidth.label(),
       desc: L.setting.imageWidth.description(),
@@ -63,32 +58,6 @@ export const createSettingConfig = async (app: App): Promise<FormSchema<ISetting
       label: L.setting.padding.left(),
       type: 'number',
       when: (settings) => settings.padding?.unified === false,
-    },
-    {
-      path: 'split.mode',
-      label: L.setting.split.mode.label(),
-      desc: L.setting.split.mode.description(),
-      type: 'select',
-      options: [
-        { value: 'none', text: L.setting.split.mode.none() },
-        { value: 'fixed', text: L.setting.split.mode.fixed() },
-        { value: 'hr', text: L.setting.split.mode.hr() },
-        { value: 'auto', text: L.setting.split.mode.auto() },
-      ],
-    },
-    {
-      path: 'split.height',
-      label: L.setting.split.height.label(),
-      desc: L.setting.split.height.description(),
-      type: 'number',
-      when: (settings) => settings.split.mode !== 'none' && settings.split.mode !== 'hr',
-    },
-    {
-      path: 'split.overlap',
-      label: L.setting.split.overlap.label(),
-      desc: L.setting.split.overlap.description(),
-      type: 'number',
-      when: (settings) => settings.split.mode === 'fixed',
     },
     {
       path: 'resolutionMode',
@@ -255,6 +224,37 @@ export const createSettingConfig = async (app: App): Promise<FormSchema<ISetting
       desc: L.setting.assetMark.ownerId.description(),
       type: 'string',
       when: { flag: true, path: 'assetMark.enable' },
+    },
+    {
+      path: 'split.mode',
+      label: L.setting.split.mode.label(),
+      desc: L.setting.split.mode.description(),
+      type: 'select',
+      options: [
+        { value: 'none', text: L.setting.split.mode.none() },
+        { value: 'fixed', text: L.setting.split.mode.fixed() },
+        { value: 'hr', text: L.setting.split.mode.hr() },
+        { value: 'auto', text: L.setting.split.mode.auto() },
+      ],
+    },
+    {
+      path: 'split.height',
+      label: L.setting.split.height.label(),
+      desc: L.setting.split.height.description(),
+      type: 'number',
+      when: (settings) => settings.split.mode !== 'none' && settings.split.mode !== 'hr',
+    },
+    {
+      path: 'split.overlap',
+      label: L.setting.split.overlap.label(),
+      desc: L.setting.split.overlap.description(),
+      type: 'number',
+      when: (settings) => settings.split.mode === 'fixed',
+    },
+    {
+      path: 'showMetadata',
+      label: L.setting.metadata.label(),
+      type: 'boolean',
     },
   ];
 };

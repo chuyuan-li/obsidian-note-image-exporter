@@ -33,7 +33,7 @@ const ro = {
     imageWidth: {
       label: 'Lățimea implicită a imaginii exportate',
       description:
-        'Setează lățimea imaginii exportate în pixeli. Implicit este 640px.',
+        'Setează lățimea imaginii exportate în pixeli. Implicit este 750px.',
     },
     split: {
       title: 'Divizare imagine',
@@ -53,7 +53,7 @@ const ro = {
       overlap: {
         label: 'Suprapunere',
         description:
-          'Setează suprapunerea dintre pagini pentru a evita un rupt brusc de conținut. Implicit este 40px.',
+          'Setează suprapunerea dintre pagini pentru a evita un rupt brusc de conținut. Implicit este 80px.',
       },
     },
     filename: {

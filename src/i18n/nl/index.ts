@@ -34,7 +34,7 @@ const nl = {
     imageWidth: {
       label: 'Standaard geëxporteerde afbeeldingsbreedte',
       description:
-        'Stel de breedte van de geëxporteerde afbeelding in pixels in. De standaard is 640px.',
+        'Stel de breedte van de geëxporteerde afbeelding in pixels in. De standaard is 750px.',
     },
     split: {
       title: 'Afbeelding delen',
@@ -52,7 +52,7 @@ const nl = {
       },
       overlap: {
         label: 'Overlapping',
-        description: 'Sett overlapp mellom sider for å unngå brutt innhold. Standard er 40px.',
+        description: 'Sett overlapp mellom sider for å unngå brutt innhold. Standard er 80px.',
       },
     },
     filename: {

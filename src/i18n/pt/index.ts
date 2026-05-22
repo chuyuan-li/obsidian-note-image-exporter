@@ -34,7 +34,7 @@ const pt = {
     imageWidth: {
       label: 'Largura padrão da imagem exportada',
       description:
-        'Defina a largura da imagem exportada em pixels. O padrão é 640px.',
+        'Defina a largura da imagem exportada em pixels. O padrão é 750px.',
     },
     split: {
       title: 'Dividir imagem',
@@ -52,7 +52,7 @@ const pt = {
       },
       overlap: {
         label: 'Sobreposição',
-        description: 'Define a sobreposição entre páginas para evitar cortes abruptos de conteúdo. O padrão é 40px.',
+        description: 'Define a sobreposição entre páginas para evitar cortes abruptos de conteúdo. O padrão é 80px.',
       },
     },
     filename: {

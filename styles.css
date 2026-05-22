@@ -50,6 +50,24 @@ If your plugin does not need CSS, delete this file.
   box-sizing: border-box;
 }
 
+.export-image-setting-heading {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 8px;
+  background: #ADCCFFA6;
+  font-weight: var(--font-bold);
+}
+
+.export-image-setting-description-lines {
+  display: grid;
+  gap: 2px;
+  padding-inline-start: 2em;
+}
+
+.export-image-setting-description-line strong {
+  color: var(--text-normal);
+}
+
 @media (max-width: 1000px) {
   .export-image-preview-main {
     flex-wrap: wrap;

@@ -31,7 +31,7 @@ const it = {
     title: 'Esporta immagine',
     padding: {
       title: 'Margine immagine',
-      description: 'Imposta il padding per l\'immagine esportata. Il valore predefinito è 6px per tutti i lati.',
+      description: 'Imposta il padding per l\'immagine esportata. Il valore predefinito è 24px per tutti i lati.',
       top: 'Padding superiore',
       right: 'Padding destro',
       bottom: 'Padding inferiore',
@@ -41,7 +41,7 @@ const it = {
     },
     imageWidth: {
       label: 'Larghezza predefinita dell\'immagine esportata',
-      description: 'Imposta la larghezza dell\'immagine esportata, il valore predefinito è 640px.',
+      description: 'Imposta la larghezza dell\'immagine esportata, il valore predefinito è 750px.',
     },
     split: {
       title: 'Divisione immagine',
@@ -59,7 +59,7 @@ const it = {
       },
       overlap: {
         label: 'Sovrapposizione immagini divise',
-        description: 'Imposta la sovrapposizione (in pixel) tra due immagini divise adiacenti per evitare che il contenuto venga tagliato. Il valore predefinito è 40px.',
+        description: 'Imposta la sovrapposizione (in pixel) tra due immagini divise adiacenti per evitare che il contenuto venga tagliato. Il valore predefinito è 80px.',
       },
     },
     filename: {

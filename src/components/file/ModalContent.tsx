@@ -60,18 +60,6 @@ const getFormSchema = (settings: ISettings, availableFormats: FileFormat[]): For
     when: (s) => s.padding?.unified === false,
   },
   {
-    path: 'split.mode',
-    label: L.setting.split.mode.label(),
-    desc: L.setting.split.mode.description(),
-    type: 'select',
-    options: [
-      { text: L.setting.split.mode.none(), value: 'none' },
-      { text: L.setting.split.mode.fixed(), value: 'fixed' },
-      { text: L.setting.split.mode.hr(), value: 'hr' },
-      { text: L.setting.split.mode.auto(), value: 'auto' },
-    ],
-  },
-  {
     path: 'resolutionMode',
     label: L.setting.resolutionMode.label(),
     desc: L.setting.resolutionMode.description(),
@@ -82,20 +70,6 @@ const getFormSchema = (settings: ISettings, availableFormats: FileFormat[]): For
       { text: "3x", value: '3x' },
       { text: "4x", value: '4x' },
     ],
-  },
-  {
-    path: 'split.height',
-    desc: L.setting.split.height.description(),
-    label: L.setting.split.height.label(),
-    type: 'number',
-    when: (settings) => settings.split.mode !== 'none' && settings.split.mode !== 'hr',
-  },
-  {
-    path: 'split.overlap',
-    desc: L.setting.split.overlap.description(),
-    label: L.setting.split.overlap.label(),
-    type: 'number',
-    when: (settings) => settings.split.mode === 'fixed',
   },
   {
     label: L.setting.userInfo.show(),
@@ -248,6 +222,32 @@ const getFormSchema = (settings: ISettings, availableFormats: FileFormat[]): For
     path: 'assetMark.ownerId',
     type: 'string',
     when: { flag: true, path: 'assetMark.enable' },
+  },
+  {
+    path: 'split.mode',
+    label: L.setting.split.mode.label(),
+    desc: L.setting.split.mode.description(),
+    type: 'select',
+    options: [
+      { text: L.setting.split.mode.none(), value: 'none' },
+      { text: L.setting.split.mode.fixed(), value: 'fixed' },
+      { text: L.setting.split.mode.hr(), value: 'hr' },
+      { text: L.setting.split.mode.auto(), value: 'auto' },
+    ],
+  },
+  {
+    path: 'split.height',
+    desc: L.setting.split.height.description(),
+    label: L.setting.split.height.label(),
+    type: 'number',
+    when: (settings) => settings.split.mode !== 'none' && settings.split.mode !== 'hr',
+  },
+  {
+    path: 'split.overlap',
+    desc: L.setting.split.overlap.description(),
+    label: L.setting.split.overlap.label(),
+    type: 'number',
+    when: (settings) => settings.split.mode === 'fixed',
   },
   {
     label: L.setting.metadata.label(),
