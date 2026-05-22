@@ -34,6 +34,10 @@ const context = await esbuild.context({
     '@lezer/common',
     '@lezer/highlight',
     '@lezer/lr',
+    // jsPDF loads these only for APIs this plugin does not use.
+    'canvg',
+    'dompurify',
+    'html2canvas',
     ...builtinModules,
   ],
   format: 'cjs',

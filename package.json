@@ -1,6 +1,6 @@
 {
   "name": "obsidian-note-image-exporter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Export and share your Obsidian notes as images.",
   "main": "main.js",
   "scripts": {
@@ -15,8 +15,8 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
     "esbuild": "^0.25.0",
     "eslint": "^9.39.4",
     "eslint-plugin-obsidianmd": "^0.3.0",
@@ -33,9 +33,9 @@
     "html-to-image": "^1.11.13",
     "jiti": "^2.7.0",
     "jspdf": "^2.5.2",
-    "jszip": "^3.10.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "fflate": "^0.8.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-zoom-pan-pinch": "^3.6.1",
     "typesafe-i18n": "^5.26.2"
   }

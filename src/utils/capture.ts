@@ -1,8 +1,8 @@
 import {
   Notice, Platform, requestUrl, type App, type TFile,
 } from 'obsidian';
+import { zipSync } from 'fflate';
 import JsPdf from 'jspdf';
-import JSZip from 'jszip';
 import * as htmlToImage from 'html-to-image';
 import L from '../L';
 import makeHTML from './makeHTML';
@@ -420,7 +420,6 @@ export async function saveAll(
 
       const ext = format.replace(/\d$/, '');
       const mime = getMime(format);
-      const zip = new JSZip();
       const blobs: { blob: Blob; filename: string }[] = [];
 
       for (let i = 0; i < splitPositions.length; i++) {
@@ -454,10 +453,11 @@ export async function saveAll(
           new Notice(L.saveSuccess({ filePath }));
         }
       } else {
+        const zipFiles: Record<string, Uint8Array> = {};
         for (const { blob, filename } of blobs) {
-          zip.file(filename, blob);
+          zipFiles[filename] = new Uint8Array(await blob.arrayBuffer());
         }
-        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const zipBlob = new Blob([zipSync(zipFiles, { level: 0 })], { type: 'application/zip' });
         saveAs(zipBlob, `${title.replaceAll(/\s+/g, '_')}.zip`);
       }
     }

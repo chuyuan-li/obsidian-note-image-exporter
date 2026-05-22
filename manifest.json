@@ -1,7 +1,7 @@
 {
 	"id": "note-share-image-exporter",
 	"name": "Note Share Image Exporter",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "1.5.7",
 	"description": "Export and share notes as images or PDFs with live preview, watermarks, and split output.",
 	"author": "chuyuan-li",

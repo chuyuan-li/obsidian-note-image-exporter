@@ -53,7 +53,7 @@ const Control: FC<{
     const file = inputReference.current?.files?.[0];
     if (file) {
       onChange(await fileToBase64(file));
-      inputReference.current!.value = '';
+      inputReference.current.value = '';
     }
   };
 
