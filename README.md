@@ -4,7 +4,7 @@ English | [中文](README.zh-CN.md)
 
 Export Obsidian notes, selections, and folders as shareable images or PDFs with live preview, split output, watermarks, and author info.
 
-![An exported Obsidian note with Mermaid, math, code, watermark, and author info](docs/readme/Note_Image_Exporter_Demo.png)
+<img src="docs/readme/Note_Image_Exporter_Demo.png" width="650" alt="An exported Obsidian note with Mermaid, math, code, watermark, and author info">
 
 Note Image Exporter keeps Obsidian rendering in the result, so a shared image can include content such as Mermaid diagrams, math, code blocks, callouts, metadata, and your current note styling.
 
@@ -14,7 +14,7 @@ Note Image Exporter keeps Obsidian rendering in the result, so a shared image ca
 2. Choose **Export to image**, **Export selection to image**, or **Export all notes to image**.
 3. Adjust the preview, then copy the result or save it as a file.
 
-![Image export preview with export settings](docs/readme/export-preview.png)
+<img src="docs/readme/export-preview.png" width="800" alt="Image export preview with export settings">
 
 ## Features
 
@@ -35,47 +35,6 @@ Note Image Exporter keeps Obsidian rendering in the result, so a shared image ca
 - Right-click a Markdown file in the file explorer and choose **Export to image**.
 - Right-click inside the editor and choose **Export to image**.
 - Open the command palette and run **Export as an image**.
-
-### Export a selection
-
-- Select Markdown content in the editor.
-- Right-click and choose **Export selection to image**, or run the matching command from the command palette.
-- Enable quick selection export in the plugin settings when you want selected content copied with fewer steps.
-
-### Export a folder
-
-- Right-click a folder in the file explorer and choose **Export all notes to image**.
-- Select the notes to export in the batch export dialog.
-
-## Export options
-
-### Output formats
-
-| Format | Typical use |
-| --- | --- |
-| PNG | Default image output. Use the transparent PNG option when the background should stay transparent. |
-| JPG | Smaller image files for sharing when transparency is not needed. |
-| WebP | Compact image output when the platform supports it. |
-| PDF | A single-page PDF output based on the exported note image. |
-
-### Split modes
-
-| Mode | Behavior |
-| --- | --- |
-| No split | Export one image. |
-| Fixed height | Split by page height with configurable overlap. |
-| Horizontal rule | Split at Markdown horizontal rules such as `---`. |
-| Auto | Split near paragraph boundaries while targeting the configured page height. |
-
-### Layout and decoration
-
-- Set the export width and resolution scaling for the target sharing context.
-- Use uniform padding or configure top, right, bottom, and left padding independently.
-- Show the filename as a title when the note needs its Obsidian title in the image.
-- Include frontmatter metadata when it should be visible in the export.
-- Add author info above or below the note and align it to the left, center, or right.
-
-Resolution scaling is capped at 4x total output scale to reduce memory pressure on large notes.
 
 ## Platform notes
 
