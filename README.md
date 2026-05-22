@@ -23,7 +23,7 @@ Note Image Exporter keeps Obsidian rendering in the result, so a shared image ca
 - Preview changes before export, including width, padding, format, resolution, watermark, and author info.
 - Split long notes with fixed-height, horizontal-rule, or automatic paragraph-based pagination.
 - Add text or image watermarks for shared images.
-- Embed a hidden asset mark into exported image pixels for later matching.
+- Embed a hidden asset mark **(invisible watermark)** into exported image pixels for later matching.
 - Add author name, extra text, avatar, alignment, and placement to exported images.
 - Export every Markdown note in a folder from the file menu.
 - Use the plugin in any of its 20 available languages.
