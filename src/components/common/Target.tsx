@@ -57,6 +57,8 @@ const Target = forwardRef<
   const rootRef = useRef<HTMLDivElement>(null);
   const clipRef = useRef<HTMLDivElement>(null);
   const [rootHeight, setRootHeight] = useState(0);
+  const includesBanner = markdownEl.instanceOf(Element)
+    && markdownEl.querySelector('.obsidian-banner-wrapper') !== null;
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -232,7 +234,10 @@ const Target = forwardRef<
       >
         <Watermark {...watermarkProps}>
           <div
-            className='markdown-preview-view markdown-rendered export-image-preview-container'
+            className={clsx(
+              'markdown-preview-view markdown-rendered export-image-preview-container',
+              includesBanner && 'export-image-preview-has-banner',
+            )}
             style={{
               width: `${setting.width}px`,
               transition: 'width 0.25s',

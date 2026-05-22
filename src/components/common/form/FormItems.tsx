@@ -1,9 +1,9 @@
-import get from 'lodash/get';
 import React, {
   type FC,
 } from 'react';
 import { type App } from 'obsidian';
 import Control from './Control';
+import { getSettingPath } from '../../../utils/settingPath';
 
 function isShow(field: FieldSchema<ISettings>, settings: ISettings) {
   if (!field.when) {
@@ -14,7 +14,7 @@ function isShow(field: FieldSchema<ISettings>, settings: ISettings) {
     return field.when(settings);
   }
 
-  return get(settings, field.when.path) === field.when.flag;
+  return getSettingPath(settings, field.when.path) === field.when.flag;
 }
 
 function splitDescription(description: string): string[] {

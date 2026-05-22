@@ -1,9 +1,7 @@
 import React, { type FC, useEffect, useRef, useState } from 'react';
-import get from 'lodash/get';
-import set from 'lodash/set';
-import cloneDeep from 'lodash/cloneDeep';
 import { setIcon, type App, Modal } from 'obsidian';
 import { fileToBase64 } from '../../../utils';
+import { getSettingPath, setSettingPath } from '../../../utils/settingPath';
 import L from '../../../L';
 import ImageSelectModal from '../imageSelectModal';
 import { getRemoteImageUrl } from 'src/utils/capture';
@@ -14,7 +12,7 @@ const Control: FC<{
   update: (settings: ISettings) => void;
   app: App;
 }> = ({ fieldSchema, setting, update, app }) => {
-  const value = get(setting, fieldSchema.path);
+  const value = getSettingPath(setting, fieldSchema.path);
   const [numberDraft, setNumberDraft] = useState<string | number | undefined>(
     value as string | number | undefined,
   );
@@ -22,8 +20,8 @@ const Control: FC<{
   const inputReference = useRef<HTMLInputElement>(null);
   const iconRef = useRef<HTMLDivElement>(null);
   const onChange = (value: SettingPathValue<ISettings, SettingPath<ISettings>>) => {
-    const newSetting = cloneDeep(setting);
-    set(newSetting, fieldSchema.path, value);
+    const newSetting = structuredClone(setting);
+    setSettingPath(newSetting, fieldSchema.path, value);
     update(newSetting);
   };
 
@@ -111,10 +109,10 @@ const Control: FC<{
         <div
           className={`checkbox-container${value ? ' is-enabled' : ''}`}
           onClick={() => {
-            onChange(!get(setting, fieldSchema.path));
+            onChange(!getSettingPath(setting, fieldSchema.path));
           }}
         >
-          <input type='checkbox' checked={value as unknown as boolean} />
+          <input type='checkbox' checked={Boolean(value)} />
         </div>
       );
     }

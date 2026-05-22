@@ -11,17 +11,17 @@ If your plugin does not need CSS, delete this file.
   pointer-events: none;
 }
 
-.export-image-root .obsidian-banner-wrapper {
-  margin-top: 0 !important;
+.export-image-root .markdown-preview-view .obsidian-banner-wrapper {
+  margin-top: 0;
   padding-top: 0;
 }
 
-.export-image-root .markdown-preview-view:has(.obsidian-banner-wrapper) {
+.export-image-root .export-image-preview-has-banner {
   padding-top: calc(var(--banner-height) + var(--size-4-6));
 }
 
-.export-image-root.markdown-reading-view {
-  container-type: normal !important;
+.export-image-root.export-image-root.markdown-reading-view {
+  container-type: normal;
 }
 
 .export-image-root pre {
