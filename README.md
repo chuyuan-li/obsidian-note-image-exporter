@@ -51,7 +51,7 @@ Install **Note Image Exporter** from Obsidian's Community plugins browser when i
 ### Manual installation
 
 1. Download `main.js`, `manifest.json`, and `styles.css` from a release.
-2. Put them in `<Vault>/.obsidian/plugins/note-image-exporter/`.
+2. Put them in `<Vault>/.obsidian/plugins/obsidian-note-image-exporter/`.
 3. Enable **Note Image Exporter** in **Settings** -> **Community plugins**.
 
 ## Privacy and network use

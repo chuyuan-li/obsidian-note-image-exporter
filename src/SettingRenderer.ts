@@ -11,7 +11,7 @@ import L from './L';
 import FormItems from './components/common/form/FormItems';
 import { syncUnifiedPadding } from './utils/settings';
 
-const REPOSITORY = 'chuyuan-li/obsidian-note-image-exporter';
+const REPOSITORY = 'chuyuan-li/note-image-exporter';
 const REPOSITORY_URL = `https://github.com/${REPOSITORY}`;
 
 const SettingsForm: FC<{
