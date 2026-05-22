@@ -1,6 +1,6 @@
 {
 	"id": "note-share-image-exporter",
-	"name": "Note Image Exporter",
+	"name": "Note Share Image Exporter",
 	"version": "1.0.0",
 	"minAppVersion": "1.5.7",
 	"description": "Export and share notes as images or PDFs with live preview, watermarks, and split output.",

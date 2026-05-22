@@ -1,4 +1,4 @@
-# Note Image Exporter
+# Note Share Image Exporter
 
 English | [中文](README.zh-CN.md)
 
@@ -6,7 +6,7 @@ Export Obsidian notes, selections, and folders as shareable images or PDFs with 
 
 <img src="docs/readme/Note_Image_Exporter_Demo.png" width="650" alt="An exported Obsidian note with Mermaid, math, code, watermark, and author info">
 
-Note Image Exporter keeps Obsidian rendering in the result, so a shared image can include content such as Mermaid diagrams, math, code blocks, callouts, metadata, and your current note styling.
+Note Share Image Exporter keeps Obsidian rendering in the result, so a shared image can include content such as Mermaid diagrams, math, code blocks, callouts, metadata, and your current note styling.
 
 ## Quick start
 
@@ -46,13 +46,13 @@ Note Image Exporter keeps Obsidian rendering in the result, so a shared image ca
 
 ### Community plugins
 
-Install **Note Image Exporter** from Obsidian's Community plugins browser when it is available there.
+Install **Note Share Image Exporter** from Obsidian's Community plugins browser when it is available there.
 
 ### Manual installation
 
 1. Download `main.js`, `manifest.json`, and `styles.css` from a release.
 2. Put them in `<Vault>/.obsidian/plugins/note-share-image-exporter/`.
-3. Enable **Note Image Exporter** in **Settings** -> **Community plugins**.
+3. Enable **Note Share Image Exporter** in **Settings** -> **Community plugins**.
 
 ## Privacy and network use
 
