@@ -3,7 +3,7 @@
 	"name": "Note Image Exporter",
 	"version": "1.0.0",
 	"minAppVersion": "1.5.7",
-	"description": "Export and share your Obsidian notes as images.",
+	"description": "Export and share notes as images or PDFs with live preview, watermarks, and split output.",
 	"author": "chuyuan-li",
 	"authorUrl": "https://github.com/chuyuan-li",
 	"isDesktopOnly": false
