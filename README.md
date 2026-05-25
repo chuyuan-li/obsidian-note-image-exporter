@@ -36,11 +36,75 @@ Note Share Image Exporter keeps Obsidian rendering in the result, so a shared im
 - Right-click inside the editor and choose **Export to image**.
 - Open the command palette and run **Export as an image**.
 
+### Export from the Obsidian CLI
+
+The plugin exposes `exportFileToPath()` for Obsidian's official `eval` command. This uses Obsidian's own Markdown renderer, theme, and plugin runtime, but skips the preview modal and writes directly to an output path.
+
+Prerequisites:
+
+- Obsidian desktop is installed and the official `obsidian` command is available.
+- This plugin is installed and enabled in the target vault.
+- After manually replacing `main.js`, reload the plugin or restart Obsidian before calling the API.
+
+Basic PNG export:
+
+```bash
+obsidian vault="My Vault" eval code="(async()=>await app.plugins.plugins['note-share-image-exporter'].exportFileToPath({\
+  input:'Folder/Note.md',\
+  output:'/Users/me/Downloads/note.png',\
+  options:{\
+    format:'png0',\
+    resolutionMode:'3x',\
+    width:900,\
+    split:{mode:'none'}\
+  }\
+}))()"
+```
+
+PDF export:
+
+```bash
+obsidian vault="My Vault" eval code="(async()=>await app.plugins.plugins['note-share-image-exporter'].exportFileToPath({\
+  input:'Folder/Note.md',\
+  output:'/Users/me/Downloads/note.pdf',\
+  options:{\
+    format:'pdf',\
+    split:{mode:'none'}\
+  }\
+}))()"
+```
+
+Split image export writes a ZIP file:
+
+```bash
+obsidian vault="My Vault" eval code="(async()=>await app.plugins.plugins['note-share-image-exporter'].exportFileToPath({\
+  input:'Folder/Note.md',\
+  output:'/Users/me/Downloads/note.zip',\
+  options:{\
+    format:'png0',\
+    split:{\
+      mode:'fixed',\
+      height:1000,\
+      overlap:80\
+    }\
+  }\
+}))()"
+```
+
+`input` can be a vault-relative Markdown path or an absolute path inside the vault. `output` must be an absolute desktop file path. Options are optional; omitted fields use the plugin's saved settings. Output extensions must match the result type: `.png`, `.jpg`, `.webp`, `.pdf`, or `.zip` for split image exports.
+
+You can confirm the API is loaded with:
+
+```bash
+obsidian vault="My Vault" eval code="typeof app.plugins.plugins['note-share-image-exporter'].exportFileToPath"
+```
+
 ## Platform notes
 
 - On desktop, saved exports are downloaded as files.
 - On mobile, saved exports are written into the current vault.
 - Clipboard copy availability depends on the output format and platform. Save the file when copy is unavailable.
+- `exportFileToPath()` is desktop-only because it writes to an absolute local file path.
 
 ## Installation
 

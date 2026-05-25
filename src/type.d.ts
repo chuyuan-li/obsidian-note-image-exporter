@@ -54,6 +54,27 @@ declare type ISettings = {
   };
 };
 
+declare type DeepPartial<T> = T extends object
+  ? {
+      [K in keyof T]?: DeepPartial<T[K]>;
+    }
+  : T;
+
+declare type CliExportRequest = {
+  input: string;
+  output: string;
+  options?: DeepPartial<ISettings>;
+};
+
+declare type CliExportResult = {
+  ok: true;
+  input: string;
+  output: string;
+  format: FileFormat;
+  splitMode: SplitMode;
+  bytes: number;
+};
+
 type SettingPath<T> = T extends object
   ? {
       [K in Extract<keyof T, string>]: NonNullable<T[K]> extends object

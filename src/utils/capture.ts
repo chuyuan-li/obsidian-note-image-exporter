@@ -11,6 +11,18 @@ import { calculateSplitPositions, getElementMeasures } from './split';
 import { hasValidExportWidth } from './settings';
 import { embedInvisibleAssetMark } from './invisibleAssetMark';
 
+type ExportTarget = {
+  element: HTMLElement;
+  contentElement: HTMLElement;
+  setClip: (startY: number, height: number) => void;
+  resetClip: () => void;
+};
+
+type ExportBlobFile = {
+  blob: Blob;
+  filename: string;
+};
+
 function saveAs(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const a = activeDocument.createElement('a');
@@ -111,6 +123,184 @@ async function saveToVault(app: App, blob: Blob, filename: string) {
   return filePath;
 }
 
+export async function createExportBlob(
+  el: HTMLElement,
+  resolutionMode: ResolutionMode,
+  format: FileFormat,
+  assetMark: ISettings['assetMark'],
+): Promise<Blob> {
+  switch (format) {
+    case 'jpg':
+    case 'webp':
+    case 'png0':
+    case 'png1':
+      return getBlob(el, resolutionMode, format, assetMark);
+    case 'pdf': {
+      const blob = await getBlob(el, resolutionMode, 'jpg', assetMark);
+      const pdf = await makePdf(blob, el);
+      return new Blob([pdf.output('arraybuffer')], { type: 'application/pdf' });
+    }
+  }
+}
+
+export async function createSplitExportFiles(
+  target: ExportTarget,
+  format: FileFormat,
+  resolutionMode: ResolutionMode,
+  splitHeight: number,
+  splitOverlap: number,
+  splitMode: SplitMode,
+  title: string,
+  assetMark: ISettings['assetMark'],
+): Promise<ExportBlobFile[]> {
+  try {
+    const totalHeight = target.contentElement.clientHeight;
+    const elements = getElementMeasures(target.contentElement, splitMode);
+
+    const splitPositions = calculateSplitPositions({
+      mode: splitMode,
+      height: splitHeight,
+      overlap: splitOverlap,
+      totalHeight,
+    }, elements);
+
+    const scale = resolutionMode === '2x' ? 2 : resolutionMode === '3x' ? 3 : resolutionMode === '4x' ? 4 : 1;
+    const pixelRatio = window.devicePixelRatio || 1;
+    const MAX_SCALE = 4;
+    const finalScale = Math.min(scale * pixelRatio, MAX_SCALE);
+
+    if (format === 'pdf') {
+      const fullCanvas = await htmlToImage.toCanvas(target.element, {
+        pixelRatio: finalScale,
+        backgroundColor: getSolidBackground(target.contentElement),
+      });
+
+      let pdf: JsPdf | undefined;
+
+      for (const { startY, height } of splitPositions) {
+        const pageCanvas = activeDocument.createElement('canvas');
+        pageCanvas.width = fullCanvas.width;
+        pageCanvas.height = Math.round(height * finalScale);
+
+        const ctx = pageCanvas.getContext('2d');
+        if (!ctx) {
+          failSave();
+        }
+        ctx.drawImage(
+          fullCanvas,
+          0, Math.round(startY * finalScale),
+          fullCanvas.width, pageCanvas.height,
+          0, 0,
+          pageCanvas.width, pageCanvas.height,
+        );
+
+        addAssetMark(pageCanvas, assetMark);
+        const dataUrl = pageCanvas.toDataURL('image/jpeg', 0.92);
+
+        if (!pdf) {
+          pdf = new JsPdf({
+            unit: 'in',
+            format: [target.element.clientWidth / 96, height / 96],
+            orientation: target.element.clientWidth > height ? 'l' : 'p',
+            compress: true,
+          });
+        } else {
+          pdf.addPage([target.element.clientWidth / 96, height / 96], target.element.clientWidth > height ? 'l' : 'p');
+        }
+
+        pdf.addImage(dataUrl, 'JPEG', 0, 0, target.element.clientWidth / 96, height / 96);
+      }
+
+      if (!pdf) {
+        failSave();
+      }
+      return [{
+        blob: new Blob([pdf.output('arraybuffer')], { type: 'application/pdf' }),
+        filename: `${title.replaceAll(/\s+/g, '_')}.pdf`,
+      }];
+    }
+
+    const fullCanvas = await htmlToImage.toCanvas(target.element, {
+      pixelRatio: finalScale,
+      backgroundColor: format === 'jpg' ? getSolidBackground(target.contentElement) : undefined,
+    });
+
+    const MAX_PIXELS = 16384 * 16384;
+    if (fullCanvas.width * fullCanvas.height > MAX_PIXELS) {
+      failSave();
+    }
+
+    const ext = format.replace(/\d$/, '');
+    const mime = getMime(format);
+    const files: ExportBlobFile[] = [];
+
+    for (let i = 0; i < splitPositions.length; i++) {
+      const { startY, height } = splitPositions[i];
+
+      const pageCanvas = activeDocument.createElement('canvas');
+      pageCanvas.width = fullCanvas.width;
+      pageCanvas.height = Math.round(height * finalScale);
+
+      const ctx = pageCanvas.getContext('2d');
+      if (!ctx) {
+        failSave();
+      }
+      ctx.drawImage(
+        fullCanvas,
+        0, Math.round(startY * finalScale),
+        fullCanvas.width, pageCanvas.height,
+        0, 0,
+        pageCanvas.width, pageCanvas.height,
+      );
+
+      addAssetMark(pageCanvas, assetMark);
+      const blob = await canvasToBlob(pageCanvas, mime);
+      const filename = `${title.replaceAll(/\s+/g, '_')}_${i + 1}.${ext}`;
+      files.push({ blob, filename });
+    }
+
+    return files;
+  } finally {
+    target.resetClip();
+  }
+}
+
+export async function createSplitExportBlob(
+  target: ExportTarget,
+  format: FileFormat,
+  resolutionMode: ResolutionMode,
+  splitHeight: number,
+  splitOverlap: number,
+  splitMode: SplitMode,
+  title: string,
+  assetMark: ISettings['assetMark'],
+): Promise<Blob> {
+  const files = await createSplitExportFiles(
+    target,
+    format,
+    resolutionMode,
+    splitHeight,
+    splitOverlap,
+    splitMode,
+    title,
+    assetMark,
+  );
+
+  if (format === 'pdf') {
+    const [file] = files;
+    if (!file) {
+      failSave();
+    }
+    return file.blob;
+  }
+
+  const zipFiles: Record<string, Uint8Array> = {};
+  for (const { blob, filename } of files) {
+    zipFiles[filename] = new Uint8Array(await blob.arrayBuffer());
+  }
+  return new Blob([zipSync(zipFiles, { level: 0 })], { type: 'application/zip' });
+}
+
 export async function save(
   app: App,
   el: HTMLElement,
@@ -126,7 +316,7 @@ export async function save(
     case 'webp':
     case 'png0':
     case 'png1': {
-      const blob: Blob = await getBlob(el, resolutionMode, format, assetMark);
+      const blob: Blob = await createExportBlob(el, resolutionMode, format, assetMark);
       if (isMobile) {
         const filePath = await app.fileManager.getAvailablePathForAttachment(
           filename,
@@ -141,16 +331,15 @@ export async function save(
     }
 
     case 'pdf': {
-      const blob = await getBlob(el, resolutionMode, 'jpg', assetMark);
-      const pdf = await makePdf(blob, el);
+      const blob = await createExportBlob(el, resolutionMode, format, assetMark);
       if (isMobile) {
         const filePath = await app.fileManager.getAvailablePathForAttachment(
           filename,
         );
-        await app.vault.createBinary(filePath, pdf.output('arraybuffer'));
+        await app.vault.createBinary(filePath, await blob.arrayBuffer());
         new Notice(L.saveSuccess({ filePath }));
       } else {
-        pdf.save(filename);
+        saveAs(blob, filename);
       }
 
       break;
@@ -326,7 +515,7 @@ export async function getRemoteImageUrl(url?: string) {
 }
 
 export async function saveAll(
-  target: { element: HTMLElement; contentElement: HTMLElement; setClip: (startY: number, height: number) => void; resetClip: () => void },
+  target: ExportTarget,
   format: FileFormat,
   resolutionMode: ResolutionMode,
   splitHeight: number,
@@ -336,132 +525,39 @@ export async function saveAll(
   title: string,
   assetMark: ISettings['assetMark'],
 ) {
-  try {
-    // 计算需要分割的页数和位置
-    const totalHeight = target.contentElement.clientHeight;
-    const elements = getElementMeasures(target.contentElement, splitMode);
+  const filename = `${title.replaceAll(/\s+/g, '_')}.${format === 'pdf' ? 'pdf' : 'zip'}`;
+  const files = await createSplitExportFiles(
+    target,
+    format,
+    resolutionMode,
+    splitHeight,
+    splitOverlap,
+    splitMode,
+    title,
+    assetMark,
+  );
 
-    const splitPositions = calculateSplitPositions({
-      mode: splitMode,
-      height: splitHeight,
-      overlap: splitOverlap,
-      totalHeight,
-    }, elements);
-
-    const scale = resolutionMode === '2x' ? 2 : resolutionMode === '3x' ? 3 : resolutionMode === '4x' ? 4 : 1;
-    const pixelRatio = window.devicePixelRatio || 1;
-    const MAX_SCALE = 4;
-    const finalScale = Math.min(scale * pixelRatio, MAX_SCALE);
-
-    if (format === 'pdf') {
-      // PDF 格式：一次 toCanvas + Canvas 裁剪
-      const fullCanvas = await htmlToImage.toCanvas(target.element, {
-        pixelRatio: finalScale,
-        backgroundColor: getSolidBackground(target.contentElement),
-      });
-
-      let pdf: JsPdf | undefined;
-
-      for (const { startY, height } of splitPositions) {
-        const pageCanvas = activeDocument.createElement('canvas');
-        pageCanvas.width = fullCanvas.width;
-        pageCanvas.height = Math.round(height * finalScale);
-
-        const ctx = pageCanvas.getContext('2d');
-        if (!ctx) {
-          failSave();
-        }
-        ctx.drawImage(
-          fullCanvas,
-          0, Math.round(startY * finalScale),
-          fullCanvas.width, pageCanvas.height,
-          0, 0,
-          pageCanvas.width, pageCanvas.height,
-        );
-
-        addAssetMark(pageCanvas, assetMark);
-        const dataUrl = pageCanvas.toDataURL('image/jpeg', 0.92);
-
-        if (!pdf) {
-          pdf = new JsPdf({
-            unit: 'in',
-            format: [target.element.clientWidth / 96, height / 96],
-            orientation: target.element.clientWidth > height ? 'l' : 'p',
-            compress: true,
-          });
-        } else {
-          pdf.addPage([target.element.clientWidth / 96, height / 96], target.element.clientWidth > height ? 'l' : 'p');
-        }
-
-        pdf.addImage(dataUrl, 'JPEG', 0, 0, target.element.clientWidth / 96, height / 96);
-      }
-
-      const filename = `${title.replaceAll(/\s+/g, '_')}.pdf`;
-      if (!pdf) {
-        failSave();
-      }
-      if (Platform.isMobile) {
-        const filePath = await saveToVault(app, new Blob([pdf.output('arraybuffer')]), filename);
-        new Notice(L.saveSuccess({ filePath }));
-      } else {
-        pdf?.save(filename);
-      }
-    } else {
-      // 其他图片格式：一次 toCanvas + Canvas 裁剪
-      const fullCanvas = await htmlToImage.toCanvas(target.element, {
-        pixelRatio: finalScale,
-        backgroundColor: format === 'jpg' ? getSolidBackground(target.contentElement) : undefined,
-      });
-
-      const MAX_PIXELS = 16384 * 16384;
-      if (fullCanvas.width * fullCanvas.height > MAX_PIXELS) {
-        failSave();
-      }
-
-      const ext = format.replace(/\d$/, '');
-      const mime = getMime(format);
-      const blobs: { blob: Blob; filename: string }[] = [];
-
-      for (let i = 0; i < splitPositions.length; i++) {
-        const { startY, height } = splitPositions[i];
-
-        const pageCanvas = activeDocument.createElement('canvas');
-        pageCanvas.width = fullCanvas.width;
-        pageCanvas.height = Math.round(height * finalScale);
-
-        const ctx = pageCanvas.getContext('2d');
-        if (!ctx) {
-          failSave();
-        }
-        ctx.drawImage(
-          fullCanvas,
-          0, Math.round(startY * finalScale),
-          fullCanvas.width, pageCanvas.height,
-          0, 0,
-          pageCanvas.width, pageCanvas.height,
-        );
-
-        addAssetMark(pageCanvas, assetMark);
-        const blob = await canvasToBlob(pageCanvas, mime);
-        const filename = `${title.replaceAll(/\s+/g, '_')}_${i + 1}.${ext}`;
-        blobs.push({ blob, filename });
-      }
-
-      if (Platform.isMobile) {
-        for (const { blob, filename } of blobs) {
-          const filePath = await saveToVault(app, blob, filename);
-          new Notice(L.saveSuccess({ filePath }));
-        }
-      } else {
-        const zipFiles: Record<string, Uint8Array> = {};
-        for (const { blob, filename } of blobs) {
-          zipFiles[filename] = new Uint8Array(await blob.arrayBuffer());
-        }
-        const zipBlob = new Blob([zipSync(zipFiles, { level: 0 })], { type: 'application/zip' });
-        saveAs(zipBlob, `${title.replaceAll(/\s+/g, '_')}.zip`);
-      }
+  if (Platform.isMobile) {
+    for (const file of files) {
+      const filePath = await saveToVault(app, file.blob, file.filename);
+      new Notice(L.saveSuccess({ filePath }));
     }
-  } finally {
-    target.resetClip();
+    return;
   }
+
+  if (format === 'pdf') {
+    const [file] = files;
+    if (!file) {
+      failSave();
+    }
+    saveAs(file.blob, file.filename);
+    return;
+  }
+
+  const zipFiles: Record<string, Uint8Array> = {};
+  for (const file of files) {
+    zipFiles[file.filename] = new Uint8Array(await file.blob.arrayBuffer());
+  }
+  const zipBlob = new Blob([zipSync(zipFiles, { level: 0 })], { type: 'application/zip' });
+  saveAs(zipBlob, filename);
 }

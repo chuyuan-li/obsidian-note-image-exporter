@@ -1,6 +1,6 @@
 {
   "name": "obsidian-note-image-exporter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Export and share your Obsidian notes as images.",
   "main": "main.js",
   "scripts": {
